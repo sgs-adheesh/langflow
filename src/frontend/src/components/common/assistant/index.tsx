@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import langflowLogo from "@/assets/LangflowLogoColor.svg";
 import { handleOnNewValueType } from "@/CustomNodes/hooks/use-handle-new-value";
+import { BRAND_NAME } from "@/constants/branding";
 import { useGetSystemMessageGenQuery } from "@/controllers/API/queries/assistant";
 import { useGetFlowId } from "@/modals/IOModal/hooks/useGetFlowId";
 import useAssistantManagerStore from "@/stores/assistantManagerStore";
@@ -140,7 +140,7 @@ export const AssistantButton: React.FC<AssistantButtonProps> = ({
     <div className="relative flex items-center">
       <button
         onClick={onButtonClick}
-        title="Langflow assistant"
+        title={`${BRAND_NAME} assistant`}
         className={getButtonClassName()}
       >
         {isFetching ? (
@@ -151,10 +151,10 @@ export const AssistantButton: React.FC<AssistantButtonProps> = ({
             }
           />
         ) : (
-          <img
-            src={langflowLogo}
-            alt="Langflow logo"
+          <ForwardedIconComponent
+            name="Sparkles"
             className={getIconClassName()}
+            aria-hidden="true"
           />
         )}
       </button>

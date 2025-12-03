@@ -13,10 +13,13 @@ from langflow.api.v1.openai_responses import router as openai_responses_router
 from langflow.api.v1.projects import router as projects_router
 from langflow.api.v1.starter_projects import router as starter_projects_router
 from langflow.api.v1.store import router as store_router
+from langflow.api.v1.tenant_login import router as tenant_login_router
 from langflow.api.v1.users import router as users_router
 from langflow.api.v1.validate import router as validate_router
 from langflow.api.v1.variable import router as variables_router
 from langflow.api.v1.voice_mode import router as voice_mode_router
+# Add our new AI workflows router
+from langflow.api.v1.ai_workflows import router as ai_workflows_router
 
 __all__ = [
     "api_key_router",
@@ -34,8 +37,11 @@ __all__ = [
     "projects_router",
     "starter_projects_router",
     "store_router",
+    "tenant_login_router",
     "users_router",
     "validate_router",
     "variables_router",
     "voice_mode_router",
+    # Add our new router to the exports
+    "ai_workflows_router",
 ]

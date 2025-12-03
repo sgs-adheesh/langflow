@@ -1,4 +1,5 @@
 import ForwardedIconComponent from "../../../../../../components/common/genericIconComponent";
+import { BRAND_NAME } from "@/constants/branding";
 
 const GeneralPageHeaderComponent = () => {
   return (
@@ -16,7 +17,7 @@ const GeneralPageHeaderComponent = () => {
             />
           </h2>
           <p className="text-sm text-muted-foreground">
-            Manage settings related to Langflow and your account.
+            Manage settings related to {BRAND_NAME} and your account.
           </p>
         </div>
       </div>

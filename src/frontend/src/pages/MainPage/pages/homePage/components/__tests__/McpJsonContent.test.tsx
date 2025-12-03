@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { DOCS_URL } from "@/constants/constants";
 import { McpJsonContent } from "../McpJsonContent";
 
 jest.mock("react-syntax-highlighter", () => ({
@@ -109,7 +110,9 @@ describe("McpJsonContent", () => {
     const link = screen.getByText("setup guide").closest("a");
     expect(link).toHaveAttribute(
       "href",
-      expect.stringContaining("docs.langflow.org"),
+      DOCS_URL && DOCS_URL !== "#"
+        ? `${DOCS_URL}/mcp-server#connect-clients-to-use-the-servers-actions`
+        : "#",
     );
   });
 

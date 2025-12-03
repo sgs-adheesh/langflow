@@ -64,7 +64,9 @@ export const mutateTemplate = async (
                 setNodeClass(newNode);
               } catch (e) {
                 if (e instanceof Error && e.message === "Node not found") {
-                  console.error("Node not found");
+                  console.warn("Node not found during template update - node may have been deleted");
+                  // Clean up the debounced function for this node
+                  debouncedFunctions.delete(nodeId);
                 } else {
                   throw e;
                 }

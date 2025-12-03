@@ -1,3 +1,5 @@
+import { BRAND_STORE_NAME } from "./branding";
+
 // ERROR
 export const MISSED_ERROR_ALERT = "Oops! Looks like you missed something";
 export const INCOMPLETE_LOOP_ERROR_ALERT =
@@ -38,9 +40,9 @@ export const PROFILE_PICTURES_GET_ERROR_ALERT =
 export const SIGNUP_ERROR_ALERT = "Error signing up";
 export const APIKEY_ERROR_ALERT = "API Key Error";
 export const NOAPI_ERROR_ALERT =
-  "You don't have an API Key. Please add one to use the Langflow Store.";
+  `You don't have an API Key. Please add one to use the ${BRAND_STORE_NAME}.`;
 export const INVALID_API_ERROR_ALERT =
-  "Your API Key is not valid. Please add a valid API Key to use the Langflow Store.";
+  `Your API Key is not valid. Please add a valid API Key to use the ${BRAND_STORE_NAME}.`;
 export const COMPONENTS_ERROR_ALERT = "Error getting components.";
 
 // NOTICE

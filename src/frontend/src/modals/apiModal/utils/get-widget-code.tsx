@@ -12,19 +12,24 @@ export default function getWidgetCode({
   isAuth,
   copy = false,
 }: GetCodeType): string {
+  const widgetScriptUrl =
+    import.meta.env.VITE_CHAT_WIDGET_URL ??
+    "https://cdn.example.com/flow-studio-chat/widget.js";
+  const widgetTag =
+    import.meta.env.VITE_CHAT_WIDGET_TAG ?? "flow-studio-chat";
+
   const source = copy
     ? `<script
-  src="https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat@v1.0.7/dist/build/static/js/bundle.min.js">
+  src="${widgetScriptUrl}">
 </script>`
     : `<script
-  src="https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat@v1.0.7/dist/
-build/static/js/bundle.min.js">
+  src="${widgetScriptUrl}">
 </script>`;
 
   const { protocol, host } = customGetHostProtocol();
 
   return `${source}
-  <langflow-chat
+  <${widgetTag}
     window_title="${flowName}"
     flow_id="${flowId}"
     host_url="${protocol}//${host}"${
@@ -33,5 +38,5 @@ build/static/js/bundle.min.js">
     api_key="..."`
         : ""
     }>
-</langflow-chat>`;
+</${widgetTag}>`;
 }

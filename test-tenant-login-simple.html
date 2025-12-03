@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tenant Login - Simple Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .test-section {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            border-radius: 4px;
+        }
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .input-group {
+            margin: 10px 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        label {
+            min-width: 120px;
+            font-weight: 500;
+            color: #555;
+        }
+        input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76,175,80,0.3);
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:active {
+            background: #3d8b40;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            resize: vertical;
+            margin-top: 10px;
+            background: #f5f5f5;
+        }
+        .success {
+            background: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1 !important;
+            border-color: #bee5eb !important;
+            color: #0c5460;
+        }
+        .status {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .status-loading {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .endpoint-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .endpoint-input input {
+            flex: 1;
+        }
+        .checklist {
+            list-style: none;
+            margin: 10px 0;
+        }
+        .checklist li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+        .check-icon {
+            font-size: 20px;
+            min-width: 25px;
+        }
+        .check-icon.pending { color: #999; }
+        .check-icon.pass { color: #4CAF50; }
+        .check-icon.fail { color: #f44336; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Tenant Login Test Suite</h1>
+        <p class="subtitle">Test if tenant authentication is working in your Langflow instance</p>
+        
+        <!-- Configuration -->
+        <div class="test-section">
+            <h3>⚙️ Configuration</h3>
+            <div class="endpoint-input">
+                <input type="text" id="langflowUrl" placeholder="Langflow URL" value="http://localhost:7860">
+                <button onclick="updateConfig()">Update</button>
+            </div>
+            <div id="configStatus" class="status status-loading" style="display:none;"></div>
+        </div>
+        
+        <!-- Test 1: Basic Connectivity -->
+        <div class="test-section">
+            <h3>Test 1: Endpoint Connectivity</h3>
+            <p style="margin-bottom: 15px; color: #666; font-size: 13px;">
+                Checks if the /api/v1/tenant/login endpoint exists
+            </p>
+            <button onclick="testConnectivity()">Run Test 1</button>
+            <div id="test1Status" class="status" style="display:none;"></div>
+            <textarea id="test1Result" placeholder="Results will appear here..."></textarea>
+        </div>
+        
+        <!-- Test 2: Valid Login -->
+        <div class="test-section">
+            <h3>Test 2: Valid Tenant Login</h3>
+            <p style="margin-bottom: 15px; color: #666; font-size: 13px;">
+                Tests successful authentication with valid credentials
+            </p>
+            <div class="input-group">
+                <label>Tenant ID:</label>
+                <input type="text" id="tenantId" placeholder="e.g., test-tenant-1" value="test-tenant-1">
+            </div>
+            <div class="input-group">
+                <label>User ID:</label>
+                <input type="text" id="userId" placeholder="e.g., test-user-1" value="test-user-1">
+            </div>
+            <div class="input-group">
+                <label>Session Token:</label>
+                <input type="text" id="sessionToken" placeholder="e.g., test-token-1" value="test-token-1">
+            </div>
+            <div class="input-group">
+                <label>Username:</label>
+                <input type="text" id="username" placeholder="e.g., testuser" value="testuser">
+            </div>
+            <button onclick="testValidLogin()">Run Test 2</button>
+            <div id="test2Status" class="status" style="display:none;"></div>
+            <textarea id="test2Result" placeholder="Results will appear here..."></textarea>
+        </div>
+        
+        <!-- Test 3: Invalid Token -->
+        <div class="test-section">
+            <h3>Test 3: Invalid Token Rejection</h3>
+            <p style="margin-bottom: 15px; color: #666; font-size: 13px;">
+                Verifies that invalid tokens are properly rejected (should return 401)
+            </p>
+            <button onclick="testInvalidToken()">Run Test 3</button>
+            <div id="test3Status" class="status" style="display:none;"></div>
+            <textarea id="test3Result" placeholder="Results will appear here..."></textarea>
+        </div>
+        
+        <!-- Test 4: Cookies -->
+        <div class="test-section">
+            <h3>Test 4: Cookie Verification</h3>
+            <p style="margin-bottom: 15px; color: #666; font-size: 13px;">
+                Checks if authentication cookies are properly set after login
+            </p>
+            <button onclick="testCookies()">Run Test 4</button>
+            <div id="test4Status" class="status" style="display:none;"></div>
+            <textarea id="test4Result" placeholder="Results will appear here..."></textarea>
+        </div>
+        
+        <!-- Summary -->
+        <div class="test-section" style="border-left-color: #2196F3;">
+            <h3>📋 Quick Status</h3>
+            <ul class="checklist" id="summary">
+                <li><span class="check-icon pending">⏳</span> Run tests to see results</li>
+            </ul>
+        </div>
+        
+        <!-- Help -->
+        <div class="test-section" style="border-left-color: #FF9800;">
+            <h3>📚 Need Help?</h3>
+            <p style="margin-bottom: 10px; color: #666; font-size: 13px;">
+                <strong>Expected Results:</strong>
+            </p>
+            <ul style="margin-left: 20px; color: #666; font-size: 13px;">
+                <li>Test 1: Should show endpoint is reachable</li>
+                <li>Test 2: Should return 200 with JWT tokens</li>
+                <li>Test 3: Should return 401 Unauthorized</li>
+                <li>Test 4: Should show access_token_lf cookie is set</li>
+            </ul>
+            <p style="margin-top: 15px; color: #666; font-size: 13px;">
+                <strong>If tests fail:</strong> Check browser console (F12) for error messages
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let langflowUrl = 'http://localhost:7860';
+        let testResults = {
+            connectivity: null,
+            validLogin: null,
+            invalidToken: null,
+            cookies: null
+        };
+        
+        function updateConfig() {
+            const url = document.getElementById('langflowUrl').value;
+            if (url.trim()) {
+                langflowUrl = url.trim();
+                showStatus('configStatus', `✅ Using: ${langflowUrl}`, 'success');
+            }
+        }
+        
+        function showStatus(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.className = `status status-${type}`;
+            el.style.display = 'block';
+        }
+        
+        function updateSummary() {
+            const summary = document.getElementById('summary');
+            const items = [
+                { name: 'Connectivity', result: testResults.connectivity },
+                { name: 'Valid Login', result: testResults.validLogin },
+                { name: 'Invalid Token', result: testResults.invalidToken },
+                { name: 'Cookies', result: testResults.cookies }
+            ];
+            
+            let html = '';
+            for (const item of items) {
+                const icon = item.result === null ? '⏳' : (item.result ? '✅' : '❌');
+                const className = item.result === null ? 'pending' : (item.result ? 'pass' : 'fail');
+                html += `<li><span class="check-icon ${className}">${icon}</span> ${item.name}</li>`;
+            }
+            
+            summary.innerHTML = html;
+        }
+        
+        async function testConnectivity() {
+            const resultEl = document.getElementById('test1Result');
+            resultEl.value = '🔄 Testing connectivity...';
+            showStatus('test1Status', '⏳ Testing...', 'loading');
+            
+            try {
+                const response = await fetch(`${langflowUrl}/api/v1/tenant/login`, {
+                    method: 'OPTIONS',
+                    mode: 'cors'
+                });
+                
+                resultEl.value = `✅ Endpoint is reachable!
+
+Status: ${response.status}
+URL: ${langflowUrl}/api/v1/tenant/login
+
+The tenant login endpoint exists and is accessible.`;
+                showStatus('test1Status', '✅ Endpoint is reachable', 'success');
+                testResults.connectivity = true;
+                
+            } catch (error) {
+                resultEl.value = `❌ Cannot reach endpoint
+
+Error: ${error.message}
+
+Check:
+- Is Langflow running?
+- Is URL correct? (${langflowUrl})
+- Are there CORS issues?`;
+                showStatus('test1Status', `❌ Failed: ${error.message}`, 'error');
+                testResults.connectivity = false;
+            }
+            
+            updateSummary();
+        }
+        
+        async function testValidLogin() {
+            const resultEl = document.getElementById('test2Result');
+            resultEl.value = '🔄 Testing valid login...';
+            showStatus('test2Status', '⏳ Testing...', 'loading');
+            
+            const tenantId = document.getElementById('tenantId').value;
+            const userId = document.getElementById('userId').value;
+            const sessionToken = document.getElementById('sessionToken').value;
+            const username = document.getElementById('username').value;
+            
+            if (!tenantId || !userId || !sessionToken) {
+                resultEl.value = '❌ Missing required fields';
+                showStatus('test2Status', '❌ Missing fields', 'error');
+                testResults.validLogin = false;
+                updateSummary();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${langflowUrl}/api/v1/tenant/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tenant_id: tenantId,
+                        user_id: userId,
+                        session_token: sessionToken,
+                        username: username || undefined
+                    }),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.access_token) {
+                    resultEl.value = `✅ LOGIN SUCCESSFUL (${response.status})
+
+${JSON.stringify(data, null, 2)}
+
+✅ Tokens received and ready to use!`;
+                    showStatus('test2Status', '✅ Valid login successful', 'success');
+                    testResults.validLogin = true;
+                } else {
+                    resultEl.value = `❌ UNEXPECTED RESPONSE (${response.status})
+
+${JSON.stringify(data, null, 2)}
+
+Note: If you see "Invalid tenant session token", it means the validation function needs YOUR backend auth logic.`;
+                    showStatus('test2Status', `❌ Unexpected response (${response.status})`, 'error');
+                    testResults.validLogin = false;
+                }
+                
+            } catch (error) {
+                resultEl.value = `❌ Request failed
+
+Error: ${error.message}
+
+Check:
+- Langflow is running
+- URL is correct
+- No CORS issues`;
+                showStatus('test2Status', `❌ Error: ${error.message}`, 'error');
+                testResults.validLogin = false;
+            }
+            
+            updateSummary();
+        }
+        
+        async function testInvalidToken() {
+            const resultEl = document.getElementById('test3Result');
+            resultEl.value = '🔄 Testing invalid token...';
+            showStatus('test3Status', '⏳ Testing...', 'loading');
+            
+            try {
+                const response = await fetch(`${langflowUrl}/api/v1/tenant/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tenant_id: 'test-tenant',
+                        user_id: 'test-user',
+                        session_token: 'invalid-token-' + Math.random()
+                    }),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (response.status === 401) {
+                    resultEl.value = `✅ CORRECTLY REJECTED (${response.status})
+
+${JSON.stringify(data, null, 2)}
+
+✅ Invalid tokens are properly rejected!`;
+                    showStatus('test3Status', '✅ Correctly rejected invalid token', 'success');
+                    testResults.invalidToken = true;
+                } else {
+                    resultEl.value = `❌ UNEXPECTED STATUS (${response.status})
+
+Expected: 401
+Got: ${response.status}
+
+${JSON.stringify(data, null, 2)}`;
+                    showStatus('test3Status', `❌ Expected 401, got ${response.status}`, 'error');
+                    testResults.invalidToken = false;
+                }
+                
+            } catch (error) {
+                resultEl.value = `❌ Request failed\n\nError: ${error.message}`;
+                showStatus('test3Status', `❌ Error: ${error.message}`, 'error');
+                testResults.invalidToken = false;
+            }
+            
+            updateSummary();
+        }
+        
+        function testCookies() {
+            const resultEl = document.getElementById('test4Result');
+            showStatus('test4Status', '⏳ Checking...', 'loading');
+            
+            const cookies = document.cookie;
+            const hasAccessToken = cookies.includes('access_token_lf');
+            const hasRefreshToken = cookies.includes('refresh_token_lf');
+            const hasApiKey = cookies.includes('apikey_tkn_lflw');
+            
+            let output = '';
+            if (hasAccessToken || hasRefreshToken || hasApiKey) {
+                output = `✅ COOKIES FOUND!\n\n${cookies || '(cookies are present but may be HttpOnly)'}`;
+                testResults.cookies = true;
+                showStatus('test4Status', '✅ Authentication cookies found', 'success');
+            } else {
+                output = `⚠️ NO COOKIES DETECTED
+
+Notes:
+- HttpOnly cookies won't show in document.cookie
+- Run Test 2 first to set cookies
+- Check browser DevTools > Application > Cookies
+
+Current cookies: ${cookies || '(none visible)'}`;
+                testResults.cookies = false;
+                showStatus('test4Status', '⚠️ No visible cookies (may be HttpOnly)', 'info');
+            }
+            
+            resultEl.value = output;
+            updateSummary();
+        }
+        
+        // Auto-update summary
+        updateSummary();
+    </script>
+</body>
+</html>

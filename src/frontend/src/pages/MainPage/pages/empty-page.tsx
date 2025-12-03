@@ -1,12 +1,11 @@
 import { ExternalLink } from "lucide-react";
 import { FaDiscord, FaGithub } from "react-icons/fa";
 import { useShallow } from "zustand/react/shallow";
-import logoDarkPng from "@/assets/logo_dark.png";
-import logoLightPng from "@/assets/logo_light.png";
 import { ForwardedIconComponent } from "@/components/common/genericIconComponent";
 import CardsWrapComponent from "@/components/core/cardsWrapComponent";
 import { Button } from "@/components/ui/button";
 import { DotBackgroundDemo } from "@/components/ui/dot-background";
+import { BRAND_NAME, BRAND_TAGLINE } from "@/constants/branding";
 import { DISCORD_URL, GITHUB_URL } from "@/constants/constants";
 import { useGetUserData, useUpdateUser } from "@/controllers/API/queries/auth";
 import useAuthStore from "@/stores/authStore";
@@ -15,8 +14,8 @@ import { useFolderStore } from "@/stores/foldersStore";
 import { formatNumber } from "@/utils/utils";
 import useFileDrop from "../hooks/use-on-file-drop";
 
-const EMPTY_PAGE_TITLE = "Welcome to Langflow";
-const EMPTY_PAGE_DESCRIPTION = "Your new favorite way to ship Agents";
+const EMPTY_PAGE_TITLE = `Welcome to ${BRAND_NAME}`;
+const EMPTY_PAGE_DESCRIPTION = BRAND_TAGLINE;
 const EMPTY_PAGE_GITHUB_DESCRIPTION =
   "Follow development, star the repo, and shape the future.";
 const EMPTY_PAGE_DISCORD_DESCRIPTION =
@@ -67,21 +66,8 @@ export const EmptyPageCommunity = ({
         <div className="m-0 h-full w-full bg-background p-0">
           <div className="z-50 flex h-full w-full flex-col items-center justify-center gap-5">
             <div className="z-50 flex flex-col items-center gap-2">
-              <div className="z-50 dark:hidden">
-                <img
-                  src={logoLightPng}
-                  alt="Langflow Logo Light"
-                  data-testid="empty_page_logo_light"
-                  className="relative top-8 h-40 pointer-events-none select-none"
-                />
-              </div>
-              <div className="z-50 hidden dark:block">
-                <img
-                  src={logoDarkPng}
-                  alt="Langflow Logo Dark"
-                  data-testid="empty_page_logo_dark"
-                  className="relative top-8 h-40 pointer-events-none select-none"
-                />
+              <div className="z-50 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 font-chivo text-3xl font-semibold uppercase text-primary">
+                <img src="" alt={`${BRAND_NAME} logo`} width={100} height={100} />
               </div>
               <span
                 data-testid="mainpage_title"

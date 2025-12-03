@@ -1,3 +1,5 @@
+import { BRAND_NAME } from "@/constants/branding";
+
 /**
  * Default description for the flow
  * @constant
@@ -20,7 +22,7 @@ export const DESCRIPTIONS: string[] = [
   "Generate, Innovate, Communicate.",
   "Conversation Catalyst Engine.",
   "Language Chainlink Master.",
-  "Design Dialogues with Langflow.",
+  `Design Dialogues with ${BRAND_NAME}.`,
   "Nurture NLP Nodes Here.",
   "Conversational Cartography Unlocked.",
   "Design, Develop, Dialogize.",
@@ -31,7 +33,7 @@ export const DESCRIPTIONS: string[] = [
   "Where Language Meets Logic.",
   "Building Intelligent Interactions.",
   "Your Passport to Linguistic Landscapes.",
-  "Create, Curate, Communicate with Langflow.",
+  `Create, Curate, Communicate with ${BRAND_NAME}.`,
   "Flow into the Future of Language.",
   "Mapping Meaningful Conversations.",
   "Unravel the Art of Articulation.",
@@ -41,7 +43,7 @@ export const DESCRIPTIONS: string[] = [
   "The Pinnacle of Prompt Generation.",
   "Language Models, Mapped and Mastered.",
   "Powerful Prompts, Perfectly Positioned.",
-  "Innovation in Interaction with Langflow.",
+  `Innovation in Interaction with ${BRAND_NAME}.`,
   "Your Toolkit for Text Generation.",
   "Unfolding Linguistic Possibilities.",
   "Building Powerful Solutions with Language Models.",

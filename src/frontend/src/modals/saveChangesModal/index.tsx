@@ -2,6 +2,7 @@ import { truncate } from "lodash";
 import { useState } from "react";
 import ForwardedIconComponent from "@/components/common/genericIconComponent";
 import Loading from "@/components/ui/loading";
+import { DOCS_URL } from "@/constants/constants";
 import ConfirmationModal from "../confirmationModal";
 
 export function SaveChangesModal({
@@ -59,7 +60,11 @@ export function SaveChangesModal({
             <a
               target="_blank"
               className="text-secondary underline"
-              href="https://docs.langflow.org/configuration-auto-save"
+              href={
+                DOCS_URL && DOCS_URL !== "#"
+                  ? `${DOCS_URL}/configuration-auto-save`
+                  : "#"
+              }
               rel="noopener"
             >
               Enable auto-saving

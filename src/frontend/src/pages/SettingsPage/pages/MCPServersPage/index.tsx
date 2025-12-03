@@ -17,6 +17,7 @@ import DeleteConfirmationModal from "@/modals/deleteConfirmationModal";
 import useAlertStore from "@/stores/alertStore";
 import type { MCPServerInfoType } from "@/types/mcp";
 import { cn } from "@/utils/utils";
+import { isArray } from "lodash";
 
 export default function MCPServersPage() {
   const { data: servers } = useGetMCPServers({ withCounts: true });
@@ -99,7 +100,7 @@ export default function MCPServersPage() {
               </div>
             )}
             <div className="flex flex-col gap-1">
-              {servers.map((server, index) => (
+              {isArray(servers) && servers.map((server, index) => (
                 <div
                   key={server.name}
                   className="flex items-center justify-between rounded-lg px-3 py-2 shadow-sm transition-colors hover:bg-accent"

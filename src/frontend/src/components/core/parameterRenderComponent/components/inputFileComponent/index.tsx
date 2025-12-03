@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ICON_STROKE_WIDTH } from "@/constants/constants";
 import { useGetFilesV2 } from "@/controllers/API/queries/file-management";
 import { usePostUploadFile } from "@/controllers/API/queries/files/use-post-upload-file";
@@ -53,6 +53,14 @@ export default function InputFileComponent({
   }
 
   const { mutateAsync, isPending } = usePostUploadFile();
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const handleButtonClick = (): void => {
     createFileUpload({ multiple: isList, accept: fileTypes?.join(",") }).then(
@@ -94,10 +102,12 @@ export default function InputFileComponent({
                     {
                       onError: (error) => {
                         console.error(CONSOLE_ERROR_MSG);
-                        setErrorData({
-                          title: "Error uploading file",
-                          list: [error.response?.data?.detail],
-                        });
+                        if (isMountedRef.current) {
+                          setErrorData({
+                            title: "Error uploading file",
+                            list: [error.response?.data?.detail],
+                          });
+                        }
                         resolve(null);
                       },
                     },
@@ -111,6 +121,7 @@ export default function InputFileComponent({
           ),
         )
           .then((results) => {
+            if (!isMountedRef.current) return;
             console.warn(results);
             // Filter out any failed uploads
             const successfulUploads = results.filter(
@@ -160,37 +171,33 @@ export default function InputFileComponent({
   ).filter((value) => value !== "");
 
   useEffect(() => {
-    if (files !== undefined && !tempFile) {
+    if (files !== undefined && Array.isArray(files) && !tempFile) {
       if (isList) {
         if (
           Array.isArray(value) &&
-          value.every((v) => files?.find((f) => f.name === v)) &&
+          value.every((v) => files.find((f) => f.name === v)) &&
           Array.isArray(file_path) &&
-          file_path.every((v) => files?.find((f) => f.path === v))
+          file_path.every((v) => files.find((f) => f.path === v))
         ) {
           return;
         }
       } else {
         if (
           typeof value === "string" &&
-          files?.find((f) => f.name === value) &&
+          files.find((f) => f.name === value) &&
           typeof file_path === "string" &&
-          files?.find((f) => f.path === file_path)
+          files.find((f) => f.path === file_path)
         ) {
           return;
         }
       }
       handleOnNewValue({
         value: isList
-          ? (files
-              ?.filter((f) => selectedFiles.includes(f.path))
-              .map((f) => f.name) ?? [])
-          : (files?.find((f) => selectedFiles.includes(f.path))?.name ?? ""),
+          ? files.filter((f) => selectedFiles.includes(f.path)).map((f) => f.name)
+          : (files.find((f) => selectedFiles.includes(f.path))?.name ?? ""),
         file_path: isList
-          ? (files
-              ?.filter((f) => selectedFiles.includes(f.path))
-              .map((f) => f.path) ?? [])
-          : (files?.find((f) => selectedFiles.includes(f.path))?.path ?? ""),
+          ? files.filter((f) => selectedFiles.includes(f.path)).map((f) => f.path)
+          : (files.find((f) => selectedFiles.includes(f.path))?.path ?? ""),
       });
     }
   }, [files, value, file_path]);
@@ -199,14 +206,13 @@ export default function InputFileComponent({
     <div className="w-full">
       <div className="flex flex-col gap-2.5">
         <div className="flex items-center gap-2.5">
-          {ENABLE_FILE_MANAGEMENT && !tempFile ? (
-            files && (
-              <div className="relative flex w-full flex-col gap-2">
-                <div className="flex max-h-44 flex-col overflow-y-auto">
-                  <FilesRendererComponent
-                    files={files.filter((file) =>
-                      selectedFiles.includes(file.path),
-                    )}
+          {ENABLE_FILE_MANAGEMENT && !tempFile && files && Array.isArray(files) ? (
+            <div className="relative flex w-full flex-col gap-2">
+              <div className="flex max-h-44 flex-col overflow-y-auto">
+                <FilesRendererComponent
+                  files={files.filter((file) =>
+                    selectedFiles.includes(file.path),
+                  )}
                     handleRemove={(path) => {
                       const newSelectedFiles = selectedFiles.filter(
                         (file) => file !== path,
@@ -275,7 +281,6 @@ export default function InputFileComponent({
                   )}
                 </FileManagerModal>
               </div>
-            )
           ) : (
             <div className="relative flex w-full">
               <div className="w-full">

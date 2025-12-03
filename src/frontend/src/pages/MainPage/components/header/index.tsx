@@ -2,6 +2,7 @@ import { debounce } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import ForwardedIconComponent from "@/components/common/genericIconComponent";
 import ShadTooltip from "@/components/common/shadTooltipComponent";
+import { ChatAssistantLauncher } from "@/components/chat-assistant";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -222,6 +223,10 @@ const HeaderComponent = ({
                     </Button>
                   </DeleteConfirmationModal>
                 </div>
+                <ChatAssistantLauncher
+                  className="mr-2"
+                  labelClassName="hidden whitespace-nowrap font-semibold md:inline"
+                />
                 <ShadTooltip content="New Flow" side="bottom">
                   <Button
                     variant="default"

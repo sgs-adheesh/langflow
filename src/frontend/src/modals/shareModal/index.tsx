@@ -1,5 +1,6 @@
 import { cloneDeep } from "lodash";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { BRAND_STORE_NAME } from "@/constants/branding";
 import useSaveFlow from "@/hooks/flows/use-save-flow";
 import { useUtilityStore } from "@/stores/utilityStore";
 import IconComponent from "../../components/common/genericIconComponent";
@@ -211,7 +212,7 @@ export default function ShareModal({
         <BaseModal.Header
           description={`Publish ${
             is_component ? "your component" : "workflow"
-          } to the Langflow Store.`}
+          } to the ${BRAND_STORE_NAME}.`}
         >
           <span className="pr-2">Share</span>
           <IconComponent

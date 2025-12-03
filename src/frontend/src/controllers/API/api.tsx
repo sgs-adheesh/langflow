@@ -9,6 +9,7 @@ import { IS_AUTO_LOGIN } from "@/constants/constants";
 import { baseURL } from "@/customization/constants";
 import { useCustomApiHeaders } from "@/customization/hooks/use-custom-api-headers";
 import { customGetAccessToken } from "@/customization/utils/custom-get-access-token";
+import { tenantAPIClient } from "./tenant-api";
 import useAuthStore from "@/stores/authStore";
 import { useUtilityStore } from "@/stores/utilityStore";
 import { BuildStatus, type EventDeliveryType } from "../../constants/enums";
@@ -161,6 +162,12 @@ function ApiInterceptor() {
 
         if (accessToken && !isAuthorizedURL(config?.url)) {
           config.headers["Authorization"] = `Bearer ${accessToken}`;
+        }
+
+        // Add tenant headers if tenant context is initialized
+        const tenantHeaders = tenantAPIClient.getTenantHeaders();
+        for (const [key, value] of Object.entries(tenantHeaders)) {
+          config.headers[key] = value;
         }
 
         const currentOrigin = window.location.origin;

@@ -311,7 +311,9 @@ const useFlowStore = create<FlowStoreType>((set, get) => ({
     isUserChange: boolean = true,
     callback?: () => void,
   ) => {
-    if (!get().nodes.find((node) => node.id === id)) {
+    const existingNode = get().nodes.find((node) => node.id === id);
+    if (!existingNode) {
+      console.warn(`[setNode] Node with ID "${id}" not found in current nodes. This may happen if the node was deleted during an async operation.`);
       throw new Error("Node not found");
     }
 

@@ -1,4 +1,5 @@
 import ForwardedIconComponent from "@/components/common/genericIconComponent";
+import { ChatAssistantLauncher } from "@/components/chat-assistant";
 import { Button } from "@/components/ui/button";
 import { useFolderStore } from "@/stores/foldersStore";
 
@@ -21,19 +22,28 @@ export const EmptyFolder = ({ setOpenModal }: EmptyFolderProps) => {
         <p className="pb-5 text-sm text-secondary-foreground">
           Begin with a template, or start from scratch.
         </p>
-        <Button
-          variant="default"
-          onClick={() => setOpenModal(true)}
-          id="new-project-btn"
-          data-testid="new_project_btn_empty_page"
-        >
-          <ForwardedIconComponent
-            name="plus"
-            aria-hidden="true"
-            className="h-4 w-4"
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <ChatAssistantLauncher
+            tooltip={null}
+            className="w-full justify-center sm:w-auto"
+            labelClassName="whitespace-nowrap font-semibold"
+            size="md"
+            variant="secondary"
           />
-          <span className="whitespace-nowrap font-semibold">New Flow</span>
-        </Button>
+          <Button
+            variant="default"
+            onClick={() => setOpenModal(true)}
+            id="new-project-btn"
+            data-testid="new_project_btn_empty_page"
+          >
+            <ForwardedIconComponent
+              name="plus"
+              aria-hidden="true"
+              className="h-4 w-4"
+            />
+            <span className="whitespace-nowrap font-semibold">New Flow</span>
+          </Button>
+        </div>
       </div>
     </div>
   );

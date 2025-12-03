@@ -1,6 +1,7 @@
 import ForwardedIconComponent from "../../../../../../components/common/genericIconComponent";
 import { Button } from "../../../../../../components/ui/button";
 import { API_PAGE_PARAGRAPH } from "../../../../../../constants/constants";
+import { BRAND_NAME } from "@/constants/branding";
 import SecretKeyModal from "../../../../../../modals/secretKeyModal";
 import { getModalPropsApiKey } from "../../helpers/get-modal-props";
 
@@ -23,7 +24,7 @@ const ApiKeyHeaderComponent = ({
             className="flex items-center text-lg font-semibold tracking-tight"
             data-testid="settings_menu_header"
           >
-            Langflow API Keys
+            {BRAND_NAME} API Keys
             <ForwardedIconComponent
               name="Key"
               className="ml-2 h-5 w-5 text-primary"

@@ -1,5 +1,6 @@
 import IconComponent from "@/components/common/genericIconComponent";
 import { Button } from "@/components/ui/button";
+import { BRAND_NAME } from "@/constants/branding";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -76,7 +77,7 @@ export const HelpDropdownView = ({
         <DropdownControlButton
           iconName="download"
           testId="canvas_controls_dropdown_get_langflow_desktop"
-          label="Get Langflow Desktop"
+          label={`Get ${BRAND_NAME} Desktop`}
           externalLink
           onClick={() => openLink(urls.desktop)}
         />

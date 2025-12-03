@@ -1,4 +1,5 @@
 import { ENABLE_KNOWLEDGE_BASES } from "@/customization/feature-flags";
+import { BRAND_NAME } from "@/constants/branding";
 import BaseModal from "@/modals/baseModal";
 import useFlowsManagerStore from "@/stores/flowsManagerStore";
 import type { CardData } from "@/types/templates/types";
@@ -49,7 +50,9 @@ export default function GetStartedComponent() {
 
   return (
     <div className="flex flex-1 flex-col gap-4 md:gap-8">
-      <BaseModal.Header description="Start with templates showcasing Langflow's Prompting, RAG, and Agent use cases.">
+      <BaseModal.Header
+        description={`Start with templates showcasing ${BRAND_NAME}'s prompting, RAG, and agent use cases.`}
+      >
         Get started
       </BaseModal.Header>
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-3">

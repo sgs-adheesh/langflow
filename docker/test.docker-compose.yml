@@ -1,0 +1,37 @@
+version: '3.8'
+
+networks:
+  langflow-network:
+
+services:
+  langflow:
+    image: langflow:test
+    container_name: langflow-test
+    restart: always
+    ports:
+      - "7860:7860"
+      - "3000:3000"
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - LANGFLOW_DATABASE_URL=postgresql://langflow:langflow@postgres:5432/langflow
+      - LANGFLOW_SUPERUSER=langflow
+      - LANGFLOW_SUPERUSER_PASSWORD=langflow
+      - LANGFLOW_CONFIG_DIR=/var/lib/langflow
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - langflow-network
+
+  postgres:
+    container_name: postgres-test
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: langflow
+      POSTGRES_PASSWORD: langflow
+      POSTGRES_DB: langflow
+    ports:
+      - "5432:5432"
+    networks:
+      - langflow-network

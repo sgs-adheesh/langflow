@@ -293,7 +293,6 @@ export async function postBuildVertex(
   if (typeof input_value !== "undefined") {
     data["inputs"] = {
       input_value: input_value,
-      client_request_time: Date.now(), // Add client timestamp in milliseconds
     };
   }
   if (data && files) {

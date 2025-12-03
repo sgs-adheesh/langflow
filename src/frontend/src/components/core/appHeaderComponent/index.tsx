@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import AlertDropdown from "@/alerts/alertDropDown";
 import DataStaxLogo from "@/assets/DataStaxLogo.svg?react";
-import LangflowLogo from "@/assets/LangflowLogo.svg?react";
 import { AssistantButton } from "@/components/common/assistant";
 import ForwardedIconComponent from "@/components/common/genericIconComponent";
 import ShadTooltip from "@/components/common/shadTooltipComponent";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import CustomAccountMenu from "@/customization/components/custom-AccountMenu";
-import CustomLangflowCounts from "@/customization/components/custom-langflow-counts";
+import { BRAND_NAME } from "@/constants/branding";
 import { CustomOrgSelector } from "@/customization/components/custom-org-selector";
 import { CustomProductSelector } from "@/customization/components/custom-product-selector";
 import {
@@ -72,7 +70,9 @@ export default function AppHeader(): JSX.Element {
           {ENABLE_DATASTAX_LANGFLOW ? (
             <DataStaxLogo className="fill-black dark:fill-[white]" />
           ) : (
-            <LangflowLogo className="h-5 w-5" />
+            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-sm font-semibold uppercase text-primary">
+              {BRAND_NAME.slice(0, 1)}
+            </span>
           )}
         </Button>
         {ENABLE_DATASTAX_LANGFLOW && (
@@ -94,14 +94,6 @@ export default function AppHeader(): JSX.Element {
         data-testid="header_right_section_wrapper"
       >
         {LANGFLOW_AGENTIC_EXPERIENCE && <AssistantButton type="header" />}
-        <>
-          <Button
-            unstyled
-            className="hidden items-center whitespace-nowrap pr-2 lg:inline"
-          >
-            <CustomLangflowCounts />
-          </Button>
-        </>
         <AlertDropdown
           notificationRef={notificationContentRef}
           onClose={() => setActiveState(null)}
@@ -141,14 +133,29 @@ export default function AppHeader(): JSX.Element {
             </AlertDropdown>
           </ShadTooltip>
         </AlertDropdown>
-        <Separator
-          orientation="vertical"
-          className="my-auto h-7 dark:border-zinc-700"
-        />
 
-        <div className="flex">
-          <CustomAccountMenu />
-        </div>
+        <ShadTooltip
+          content="Settings"
+          side="bottom"
+          styleClasses="z-10"
+        >
+          <Button
+            unstyled
+            onClick={() => navigate("/settings")}
+            data-testid="settings_button"
+          >
+            <div className="hit-area-hover group relative items-center rounded-md px-2 py-2 text-muted-foreground">
+              <ForwardedIconComponent
+                name="Settings"
+                className="side-bar-button-size h-4 w-4 text-muted-foreground group-hover:text-primary"
+                strokeWidth={2}
+              />
+              <span className="hidden whitespace-nowrap">
+                Settings
+              </span>
+            </div>
+          </Button>
+        </ShadTooltip>
       </div>
     </div>
   );

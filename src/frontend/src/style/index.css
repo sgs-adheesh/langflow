@@ -18,20 +18,20 @@
     --card-foreground: 0 0% 0%; /* hsl(0, 0%, 0%) */
     --popover: 0 0% 100%; /* hsl(0, 0%, 100%) */
     --popover-foreground: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --border: 240 6% 90%; /* hsl(240, 6%, 90%) */
-    --input: 240 6% 90%; /* hsl(240, 6%, 90%) */
+    --border: 240 6% 90%; /* hsl(240, 6%, 90%) - Keep black border */
+    --input: 240 6% 90%; /* hsl(240, 6%, 90%) - Keep black input */
     --primary-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --primary: 0 0% 0%; /* hsl(0, 0%, 0%) */
+    --primary: 217.2 91.2% 59.8%; /* hsl(217.2, 91.2%, 59.8%) - Blue button */
     --secondary: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --secondary-foreground: 240 4% 16%; /* hsl(240, 4%, 16%) */
-    --accent: 240 5% 96%; /* hsl(240, 5%, 96%) */
-    --accent-foreground: 0 0% 0%; /* hsl(0, 0%, 0%) */
+    --secondary-foreground: 240 4% 16%; /* hsl(240, 4%, 16%) - Keep black text */
+    --accent: 217.2 91.2% 90%; /* hsl(217.2, 91.2%, 90%) - Blue hover */
+    --accent-foreground: 0 0% 0%; /* hsl(0, 0%, 0%) - Keep black text */
     --destructive: 0 72% 51%; /* hsl(0, 72%, 51%) */
     --destructive-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
     --accent-amber: 26 90% 37%; /* hsl(26, 90%, 37%) */
     --accent-amber-foreground: 26 90% 37%; /* hsl(26, 90%, 37%) */
-    --ring: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --primary-hover: 240 4% 16%; /* hsl(240, 4%, 16%) */
+    --ring: 217.2 91.2% 59.8%; /* hsl(217.2, 91.2%, 59.8%) - Blue ring */
+    --primary-hover: 192.2 82.3% 50.8%; /* hsl(192.2, 82.3%, 50.8%) - Darker blue hover */
     --secondary-hover: 240 6% 90%; /* hsl(240, 6%, 90%) */
     --placeholder-foreground: 240 5% 65%; /* hsl(240, 5%, 65%) */
     --canvas: 240 5% 96%; /* hsl(240, 5%, 96%) */
@@ -51,25 +51,25 @@
     --tooltip: 0 0% 0%; /* hsl(0, 0%, 0%) */
     --tooltip-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
 
-    --jse-theme-color: hsl(240, 5%, 96%);
-    --jse-theme-color-highlight: hsl(240, 6%, 90%);
-    --jse-menu-color: hsl(240, 6%, 90%);
-    --jse-main-border: hsl(240, 6%, 90%);
-    --jse-background-color: hsl(240, 5%, 96%);
+    --jse-theme-color: hsl(217.2, 91.2%, 90%);
+    --jse-theme-color-highlight: hsl(217.2, 91.2%, 85%);
+    --jse-menu-color: hsl(217.2, 91.2%, 80%);
+    --jse-main-border: hsl(217.2, 91.2%, 80%);
+    --jse-background-color: hsl(217.2, 91.2%, 95%);
     --jse-text-color: hsl(0, 0%, 0%);
-    --jse-selection-background-color: hsl(240, 4%, 46%, 0.2);
-    --jse-selection-background-inactive-color: hsl(240, 4%, 46%, 0.15);
-    --jse-hover-background-color: hsl(240, 5%, 96%);
-    --jse-active-line-background-color: hsl(240, 5%, 96%);
-    --jse-search-match-background-color: hsl(240, 5%, 96%);
-    --jse-search-match-color: hsl(243, 75%, 59%);
+    --jse-selection-background-color: hsl(217.2, 91.2%, 40%, 0.2);
+    --jse-selection-background-inactive-color: hsl(217.2, 91.2%, 40%, 0.15);
+    --jse-hover-background-color: hsl(217.2, 91.2%, 90%);
+    --jse-active-line-background-color: hsl(217.2, 91.2%, 95%);
+    --jse-search-match-background-color: hsl(217.2, 91.2%, 90%);
+    --jse-search-match-color: hsl(217.2, 91.2%, 40%);
     --jse-text-readonly: hsl(240, 4%, 46%);
     --jse-error-color: hsl(0, 72%, 51%);
     --jse-warning-color: hsl(48, 96%, 89%);
     --jse-info-color: hsl(221, 83%, 53%);
     --jse-success-color: hsl(142, 76%, 36%);
 
-    --node-selected: 243 75% 59%;
+    --node-selected: 217.2 91.2% 59.8%; /* Blue node selected */
     --round-btn-shadow: #00000063;
     --ice: #31a3cc;
     --selected: #2196f3;
@@ -106,13 +106,13 @@
     /* Colors that are shared in dark and light mode */
     --blur-shared: #151923de;
     --build-trigger: #dc735b;
-    --chat-trigger: #5c8be1;
+    --chat-trigger: #4a90e2;
     --chat-trigger-disabled: #b4c3da;
     --status-red: #ef4444;
     --status-yellow: #eab308;
     --chat-send: #000000;
     --status-green: #4ade80;
-    --status-blue: #2563eb;
+    --status-blue: #4a90e2;
     --status-gray: #6b7280;
     --connection: #555;
 
@@ -179,7 +179,7 @@
     --datatype-orange: 20.5 90.2% 48.2%;
     --datatype-orange-foreground: 34.3 100% 91.8%;
 
-    --node-ring: 240 6% 90%;
+    --node-ring: 217.2 91.2% 80%;
 
     --neon-fuschia: 340 100% 60%; /* hsl(340, 100%, 60%) */
     --digital-orchid: 295 100% 75%; /* hsl(295, 100%, 75%) */
@@ -211,18 +211,18 @@
     --card-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
     --popover: 240 6% 10%; /* hsl(240, 6%, 10%) */
     --popover-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --border: 240 5% 26%; /* hsl(240, 5%, 26%) */
-    --input: 240 5% 34%; /* hsl(240, 5%, 34%) */
+    --border: 240 5% 26%; /* hsl(240, 5%, 26%) - Keep black border */
+    --input: 240 5% 34%; /* hsl(240, 5%, 34%) - Keep black input */
     --primary-foreground: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --primary: 0 0% 100%; /* hsl(0, 0%, 100%) */
+    --primary: 217.2 91.2% 59.8%; /* hsl(217.2, 91.2%, 59.8%) - Blue button */
     --secondary: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --secondary-foreground: 240 6% 90%; /* hsl(240, 6%, 90%) */
-    --accent: 240 4% 16%; /* hsl(240, 4%, 16%) */
-    --accent-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
+    --secondary-foreground: 240 6% 90%; /* hsl(240, 6%, 90%) - Keep light text */
+    --accent: 217.2 91.2% 40%; /* hsl(217.2, 91.2%, 40%) - Blue hover */
+    --accent-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) - Keep light text */
     --destructive: 0 84% 60%; /* hsl(0, 84%, 60%) */
     --destructive-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --ring: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --primary-hover: 240 6% 90%; /* hsl(240, 6%, 90%) */
+    --ring: 217.2 91.2% 70%; /* hsl(217.2, 91.2%, 70%) - Blue ring */
+    --primary-hover: 210 95% 65%; /* hsl(210, 95%, 65%) - Brighter blue hover */
     --secondary-hover: 240 4% 16%; /* hsl(240, 4%, 16%) */
     --placeholder-foreground: 240 4% 46%; /* hsl(240, 4%, 46%) */
     --canvas: 0 0% 0%; /* hsl(0, 0%, 0%) */
@@ -383,7 +383,7 @@
     --status-yellow: #eab308;
     --chat-send: #ffffff;
     --status-green: #4ade80;
-    --status-blue: #2563eb;
+    --status-blue: #4a90e2;
     --connection: #6d6c6c;
     --code-background: 240 6% 10%;
     --code-description-background: 0 0% 0%;
@@ -398,7 +398,7 @@
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary: 217.2 91.2% 59.8%; /* Blue sidebar primary */
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;

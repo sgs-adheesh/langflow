@@ -1,7 +1,9 @@
+import { BRAND_NAME } from "@/constants/branding";
+
 export const getModalPropsApiKey = () => {
   const modalProps = {
     title: "Create API Key",
-    description: "Create a secret API Key to use Langflow API.",
+    description: `Create a secret API Key to use the ${BRAND_NAME} API.`,
     inputPlaceholder: "My API Key",
     buttonText: "Generate API Key",
     generatedKeyMessage: (

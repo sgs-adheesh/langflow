@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PaginatorComponent from "@/components/common/paginatorComponent";
 import CardsWrapComponent from "@/components/core/cardsWrapComponent";
-import { IS_MAC } from "@/constants/constants";
+import { DOCS_URL, IS_MAC } from "@/constants/constants";
 import { useGetFolderQuery } from "@/controllers/API/queries/folders/use-get-folder";
 import { CustomBanner } from "@/customization/components/custom-banner";
 import { CustomMcpServerTab } from "@/customization/components/custom-McpServerTab";
@@ -330,7 +330,11 @@ const HomePage = ({ type }: { type: "flows" | "components" | "mcp" }) => {
                     <div className="pt-24 text-center text-sm text-secondary-foreground">
                       No saved or custom components. Learn more about{" "}
                       <a
-                        href="https://docs.langflow.org/components-custom-components"
+                        href={
+                          DOCS_URL && DOCS_URL !== "#"
+                            ? `${DOCS_URL}/components-custom-components`
+                            : "#"
+                        }
                         target="_blank"
                         rel="noreferrer"
                         className="underline"

@@ -1,3 +1,4 @@
+import { BRAND_NAME } from "@/constants/branding";
 import { BUILD_POLLING_INTERVAL } from "@/constants/constants";
 import { BuildStatus, EventDeliveryType } from "@/constants/enums";
 import { VertexLayerElementType } from "@/types/zustand/flow";
@@ -39,7 +40,7 @@ export async function customPollBuildEvents(
       const errorData = await response.json().catch(() => ({}));
       throw new Error(
         errorData.detail ||
-          "Langflow was not able to connect to the server. Please make sure your connection is working properly.",
+          `${BRAND_NAME} was not able to connect to the server. Please make sure your connection is working properly.`,
       );
     }
 

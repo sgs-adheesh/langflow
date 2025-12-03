@@ -2,6 +2,7 @@ import type { Edge, Node } from "@xyflow/react";
 import type { AxiosError } from "axios";
 import { flushSync } from "react-dom";
 import { MISSED_ERROR_ALERT } from "@/constants/alerts_constants";
+import { BRAND_NAME } from "@/constants/branding";
 import {
   BUILD_POLLING_INTERVAL,
   POLLING_MESSAGES,
@@ -252,8 +253,6 @@ export async function buildFlowVertices({
   if (session) {
     inputs["session"] = session;
   }
-  // Add client timestamp for accurate duration tracking
-  inputs["client_request_time"] = Date.now();
   if (Object.keys(inputs).length > 0) {
     postData["inputs"] = inputs;
   }
@@ -408,7 +407,7 @@ export async function buildFlowVertices({
     }
     onBuildError!("Error Building Flow", [
       (error as Error).message ||
-        "Langflow was not able to connect to the server. Please make sure your connection is working properly.",
+        `${BRAND_NAME} was not able to connect to the server. Please make sure your connection is working properly.`,
     ]);
     throw error;
   }

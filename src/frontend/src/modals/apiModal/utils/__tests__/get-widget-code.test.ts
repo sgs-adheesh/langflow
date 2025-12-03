@@ -15,6 +15,9 @@ describe("getWidgetCode", () => {
     isAuth: false,
     webhookAuthEnable: false,
   };
+  const DEFAULT_WIDGET_URL =
+    "https://cdn.example.com/flow-studio-chat/widget.js";
+  const DEFAULT_WIDGET_TAG = "flow-studio-chat";
 
   describe("Basic widget code generation", () => {
     it("should generate widget code with API key when isAuth is false", () => {
@@ -23,14 +26,11 @@ describe("getWidgetCode", () => {
       // Check for script tag with CDN link
       expect(code).toContain("<script");
       expect(code).toContain("src=");
-      expect(code).toContain(
-        "https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat",
-      );
-      expect(code).toContain("@v1.0.7");
+      expect(code).toContain(DEFAULT_WIDGET_URL);
       expect(code).toContain("</script>");
 
-      // Check for langflow-chat component
-      expect(code).toContain("<langflow-chat");
+      // Check for chat component
+      expect(code).toContain(`<${DEFAULT_WIDGET_TAG}`);
       expect(code).toContain('window_title="Test Flow"');
       expect(code).toContain('flow_id="test-flow-123"');
       expect(code).toContain('host_url="https://localhost:3000"');
@@ -39,7 +39,7 @@ describe("getWidgetCode", () => {
       expect(code).toContain('api_key="..."');
 
       // Check closing tag
-      expect(code).toContain("</langflow-chat>");
+      expect(code).toContain(`</${DEFAULT_WIDGET_TAG}>`);
     });
 
     it("should generate widget code without API key when isAuth is true", () => {
@@ -50,12 +50,10 @@ describe("getWidgetCode", () => {
 
       // Check for script tag
       expect(code).toContain("<script");
-      expect(code).toContain(
-        "https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat@v1.0.7",
-      );
+      expect(code).toContain(DEFAULT_WIDGET_URL);
 
-      // Check for langflow-chat component
-      expect(code).toContain("<langflow-chat");
+      // Check for chat component
+      expect(code).toContain(`<${DEFAULT_WIDGET_TAG}`);
       expect(code).toContain('window_title="Test Flow"');
       expect(code).toContain('flow_id="test-flow-123"');
       expect(code).toContain('host_url="https://localhost:3000"');
@@ -64,7 +62,7 @@ describe("getWidgetCode", () => {
       expect(code).not.toContain("api_key");
 
       // Check closing tag
-      expect(code).toContain("</langflow-chat>");
+      expect(code).toContain(`</${DEFAULT_WIDGET_TAG}>`);
     });
 
     it("should use single-line CDN URL when copy is false", () => {
@@ -75,8 +73,7 @@ describe("getWidgetCode", () => {
 
       // Should use multi-line format for non-copy mode
       expect(code).toContain("src=");
-      expect(code).toContain("https://cdn.jsdelivr.net/gh/logspace-ai");
-      expect(code).toContain("build/static/js/bundle.min.js");
+      expect(code).toContain(DEFAULT_WIDGET_URL);
     });
 
     it("should use formatted CDN URL when copy is true", () => {
@@ -86,10 +83,7 @@ describe("getWidgetCode", () => {
       });
 
       // Should use single-line format for copy mode
-      expect(code).toContain(
-        "https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat@v1.0.7/dist/build/static/js/bundle.min.js",
-      );
-      expect(code).not.toContain("\nbuild/static");
+      expect(code).toContain(DEFAULT_WIDGET_URL);
     });
   });
 
@@ -247,10 +241,7 @@ describe("getWidgetCode", () => {
       });
 
       // Single-line CDN URL
-      expect(code).toContain(
-        "https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat@v1.0.7/dist/build/static/js/bundle.min.js",
-      );
-      expect(code).not.toContain("\nbuild/static");
+      expect(code).toContain(DEFAULT_WIDGET_URL);
     });
 
     it("should use readable format when copy is false", () => {
@@ -261,7 +252,7 @@ describe("getWidgetCode", () => {
 
       // Multi-line CDN URL
       expect(code).toContain("src=");
-      expect(code).toContain("build/static/js/bundle.min.js");
+      expect(code).toContain(DEFAULT_WIDGET_URL);
     });
 
     it("should default to readable format when copy is undefined", () => {
@@ -272,13 +263,13 @@ describe("getWidgetCode", () => {
         webhookAuthEnable: false,
       } as any);
 
-      // Should use multi-line format by default
-      expect(code).toContain("\nbuild/static");
+      // Should still include the script URL
+      expect(code).toContain(DEFAULT_WIDGET_URL);
     });
   });
 
   describe("Code structure", () => {
-    it("should have proper HTML structure with script and langflow-chat tags", () => {
+    it("should have proper HTML structure with script and chat widget tags", () => {
       const code = getWidgetCode(baseOptions);
 
       // Check for opening and closing script tags
@@ -287,12 +278,12 @@ describe("getWidgetCode", () => {
       expect(scriptTagCount).toBe(1);
       expect(scriptCloseTagCount).toBe(1);
 
-      // Check for opening and closing langflow-chat tags
-      expect(code).toContain("<langflow-chat");
-      expect(code).toContain("</langflow-chat>");
+      // Check for opening and closing chat tags
+      expect(code).toContain(`<${DEFAULT_WIDGET_TAG}`);
+      expect(code).toContain(`</${DEFAULT_WIDGET_TAG}>`);
     });
 
-    it("should have all required attributes in langflow-chat component", () => {
+    it("should have all required attributes in the chat widget component", () => {
       const code = getWidgetCode(baseOptions);
 
       expect(code).toMatch(/window_title="[^"]*"/);
@@ -300,17 +291,10 @@ describe("getWidgetCode", () => {
       expect(code).toMatch(/host_url="[^"]*"/);
     });
 
-    it("should have correct CDN version reference", () => {
+    it("should include the chat widget script URL", () => {
       const code = getWidgetCode(baseOptions);
 
-      expect(code).toContain("@v1.0.7");
-    });
-
-    it("should have correct bundle path", () => {
-      const code = getWidgetCode(baseOptions);
-
-      // Bundle path may span multiple lines in non-copy mode
-      expect(code).toContain("build/static/js/bundle.min.js");
+      expect(code).toContain(DEFAULT_WIDGET_URL);
     });
   });
 
@@ -324,7 +308,7 @@ describe("getWidgetCode", () => {
       } as any);
 
       expect(code).toContain("<script");
-      expect(code).toContain("<langflow-chat");
+      expect(code).toContain(`<${DEFAULT_WIDGET_TAG}`);
       expect(code).toContain('window_title=""');
       expect(code).toContain('flow_id=""');
     });
@@ -338,8 +322,8 @@ describe("getWidgetCode", () => {
       } as any);
 
       expect(code).toContain("<script");
-      expect(code).toContain("<langflow-chat");
-      expect(code).toContain("</langflow-chat>");
+      expect(code).toContain(`<${DEFAULT_WIDGET_TAG}`);
+      expect(code).toContain(`</${DEFAULT_WIDGET_TAG}>`);
     });
 
     it("should produce consistent output for same inputs", () => {
