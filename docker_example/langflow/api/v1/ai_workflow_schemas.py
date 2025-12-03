@@ -44,3 +44,18 @@ class ProcessAIWorkflowResponse(BaseModel):
     flow_data: dict[str, Any] | None = Field(None, description="Processed flow data ready for creation")
     message: str | None = Field(None, description="Status message")
     error: str | None = Field(None, description="Error message if processing failed")
+
+
+class EditAIWorkflowRequest(BaseModel):
+    """Request to edit an existing workflow using AI."""
+    
+    workflow_data: dict[str, Any] = Field(..., description="Modified AI-suggested workflow data")
+
+
+class EditAIWorkflowResponse(BaseModel):
+    """Response from editing a workflow using AI."""
+    
+    success: bool = Field(True, description="Whether the edit was successful")
+    flow_data: dict[str, Any] | None = Field(None, description="Updated flow data")
+    message: str | None = Field(None, description="Status message")
+    error: str | None = Field(None, description="Error message if editing failed")

@@ -19,6 +19,7 @@ from langflow.api.v1.variable import router as variables_router
 from langflow.api.v1.voice_mode import router as voice_mode_router
 # Add our new AI workflows router
 from langflow.api.v1.ai_workflows import router as ai_workflows_router
+from langflow.api.v1.ai_workflow_edit import router as ai_workflow_edit_router
 
 __all__ = [
     "api_key_router",
@@ -42,4 +43,5 @@ __all__ = [
     "voice_mode_router",
     # Add our new router to the exports
     "ai_workflows_router",
+    "ai_workflow_edit_router",
 ]

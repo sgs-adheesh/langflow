@@ -63,3 +63,31 @@ Volumes:
 ## Switching to a Specific LangFlow Version
 
 If you want to use a specific version of LangFlow, you can modify the `image` field under the `langflow` service in the Docker Compose file. For example, to use version 1.0-alpha, change `langflowai/langflow:latest` to `langflowai/langflow:1.0-alpha`.
+
+## New Feature: Edit Workflows using AI
+
+This docker_example now includes the "Edit using AI" feature:
+
+### Backend Changes:
+- ✅ `langflow/api/v1/ai_workflow_edit.py` - New endpoint for editing workflows
+- ✅ `langflow/api/v1/schemas.py` - Added `EditAIWorkflowRequest` and `EditAIWorkflowResponse`
+- ✅ `langflow/api/v1/__init__.py` - Exports the new router
+- ✅ `langflow/api/router.py` - Registers the edit router
+
+### API Endpoint:
+```
+POST /api/v1/ai_workflows/edit/{flow_id}
+```
+
+### Usage:
+1. The frontend "Edit using AI" button sends simplified workflow format
+2. Backend processes through existing AI workflow processor
+3. Updates the workflow in the database
+4. Returns the updated workflow
+
+### Testing:
+```bash
+docker compose up
+# Access at http://localhost:7860/
+# Select any workflow → click "..." → "Edit using AI"
+```

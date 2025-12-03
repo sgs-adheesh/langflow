@@ -489,6 +489,10 @@ def create_app():
 
         router.include_router(mcp_router)
 
+    # Include AI workflow edit router
+    from langflow.api.v1 import ai_workflow_edit
+    router.include_router(ai_workflow_edit.router)
+
     app.include_router(router)
     app.include_router(health_check_router)
     app.include_router(log_router)
