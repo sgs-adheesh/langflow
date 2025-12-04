@@ -24,6 +24,18 @@ const FlowToolbarOptions = ({
   const hasIO = useFlowStore((state) => state.hasIO);
   const [openEditAI, setOpenEditAI] = useState(false);
   const currentFlow = useFlowsManagerStore((state) => state.currentFlow);
+  const nodes = useFlowStore((state) => state.nodes); // Get nodes from flowStore
+  const edges = useFlowStore((state) => state.edges); // Get edges from flowStore
+
+  // Build flowData from current state when needed
+  const flowData = currentFlow ? {
+    ...currentFlow,
+    data: {
+      nodes: nodes,
+      edges: edges,
+      viewport: currentFlow.data?.viewport || { x: 0, y: 0, zoom: 1 }
+    }
+  } : null;
 
   return (
     <>
@@ -38,12 +50,29 @@ const FlowToolbarOptions = ({
         </div>
         
         {/* Edit using AI Button */}
-        <ShadTooltip content="Edit using AI" side="bottom">
+        <ShadTooltip 
+          content={
+            nodes.length > 0
+              ? "Edit using AI" 
+              : "Add components to your workflow first"
+          } 
+          side="bottom"
+        >
           <Button
             variant="ghost"
-            onClick={() => setOpenEditAI(true)}
+            onClick={() => {
+              console.log("Edit AI button clicked", {
+                currentFlow: !!currentFlow,
+                flowData: !!flowData,
+                nodesCount: nodes.length,
+                edgesCount: edges.length,
+                openEditAI: openEditAI
+              });
+              setOpenEditAI(true);
+            }}
             className="gap-2 h-9"
             data-testid="edit-with-ai-button"
+            disabled={nodes.length === 0}
           >
             <ForwardedIconComponent
               name="Sparkles"
@@ -60,11 +89,11 @@ const FlowToolbarOptions = ({
       </div>
       
       {/* AI Edit Dialog - Styled like ChatAssistant but for editing */}
-      {currentFlow && (
+      {flowData && nodes.length > 0 && (
         <WorkflowEditAIDialog
           open={openEditAI}
           onOpenChange={setOpenEditAI}
-          flowData={currentFlow}
+          flowData={flowData}
           onSuccess={() => {
             setOpenEditAI(false);
           }}

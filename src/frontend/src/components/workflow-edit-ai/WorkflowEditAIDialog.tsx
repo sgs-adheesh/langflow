@@ -55,11 +55,45 @@ export function WorkflowEditAIDialog({
   useEffect(() => {
     if (open && flowData && messages.length === 0) {
       setMessages(initialMessages(flowData.name || "workflow"));
+      
+      // Debug: Log the flowData structure
+      console.log("FlowData received:", {
+        hasData: !!flowData.data,
+        hasNodes: !!flowData.data?.nodes,
+        hasEdges: !!flowData.data?.edges,
+        nodesCount: flowData.data?.nodes?.length || 0,
+        edgesCount: flowData.data?.edges?.length || 0,
+        fullData: flowData
+      });
+      
       try {
+        // Validate flowData structure before conversion
+        if (!flowData.data) {
+          throw new Error("Workflow has no data property. The workflow may not be fully loaded yet. Please try closing and reopening this dialog.");
+        }
+        
+        if (!flowData.data.nodes || !Array.isArray(flowData.data.nodes)) {
+          throw new Error("Workflow has no nodes. Please add at least one component to your workflow before editing.");
+        }
+        
+        if (flowData.data.nodes.length === 0) {
+          throw new Error("Workflow is empty. Please add at least one component to your workflow before editing.");
+        }
+        
         const simplified = convertFlowToSimplified(flowData);
         simplifiedWorkflowRef.current = simplified;
+        console.log("Workflow converted successfully:", simplified);
       } catch (err) {
         console.error("Failed to convert workflow:", err);
+        const errorMessage = err instanceof Error ? err.message : "Unknown error";
+        setError(`Failed to load workflow: ${errorMessage}`);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: `❌ Error: Unable to load workflow data. ${errorMessage}\n\nPlease ensure the workflow has valid nodes and edges.`,
+          },
+        ]);
       }
     }
   }, [open, flowData]);
@@ -83,7 +117,12 @@ export function WorkflowEditAIDialog({
       // Step 1: Get the current workflow as simplified JSON
       const simplified = simplifiedWorkflowRef.current;
       if (!simplified) {
-        throw new Error("Workflow data not available");
+        throw new Error("Workflow data not available. The workflow may not have been loaded correctly. Please close and reopen the dialog.");
+      }
+
+      // Validate the simplified workflow has required components
+      if (!simplified.components || simplified.components.length === 0) {
+        throw new Error("Workflow must have at least one component to edit.");
       }
 
       // Step 2: Prepare prompt with simplified JSON + edit instruction

@@ -74,12 +74,12 @@ export const toolModeGradient =
   "linear-gradient(-60deg,var(--tool-mode-gradient-1) 0%,var(--tool-mode-gradient-2) 100%)";
 
 export const swatchColors = [
-  "bg-neon-fuschia text-white",
-  "bg-digital-orchid text-plasma-purple",
-  "bg-plasma-purple text-digital-orchid",
-  "bg-electric-blue text-holo-frost",
-  "bg-holo-frost text-electric-blue",
-  "bg-terminal-green text-cosmic-void",
+  "bg-indigo-500 text-indigo-700",
+  "bg-purple-500 text-purple-700",
+  "bg-blue-500 text-blue-700",
+  "bg-teal-500 text-teal-700",
+  "bg-emerald-500 text-emerald-700",
+  "bg-rose-500 text-rose-700",
 ];
 
 export const nodeColors: { [char: string]: string } = {
