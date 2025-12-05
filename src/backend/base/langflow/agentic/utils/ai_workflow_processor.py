@@ -32,6 +32,7 @@ class AISuggestedWorkflow:
         description: str,
         components: List[Dict[str, Any]],
         connections: List[Dict[str, Any]],
+        positions: Optional[Dict[str, Dict[str, float]]] = None,
     ):
         """Initialize with simplified workflow data.
         
@@ -40,11 +41,13 @@ class AISuggestedWorkflow:
             description: Human-readable workflow description
             components: List of component specifications
             connections: List of component connections
+            positions: Optional dictionary of preserved positions {node_id: {x, y}}
         """
         self.name = name
         self.description = description
         self.components = components
         self.connections = connections
+        self.positions = positions or {}
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> AISuggestedWorkflow:
@@ -67,6 +70,7 @@ class AISuggestedWorkflow:
             description=data.get("description", ""),
             components=data.get("components", []),
             connections=data.get("connections", []),
+            positions=data.get("positions", {}),
         )
 
 
@@ -707,13 +711,14 @@ class WorkflowProcessor:
         return json_str.replace('"', 'œ')
 
     async def process_workflow(
-        self, ai_workflow: AISuggestedWorkflow, user_id: Union[str, uuid.UUID]
+        self, ai_workflow: AISuggestedWorkflow, user_id: Union[str, uuid.UUID], positions: Optional[Dict[str, Dict[str, float]]] = None
     ) -> Dict[str, Any]:
         """Process AI workflow into structured flow data.
         
         Args:
             ai_workflow: AI-suggested workflow structure
             user_id: User ID for flow ownership
+            positions: Optional dictionary of preserved positions {node_id: {x, y}}
             
         Returns:
             Dictionary with processed flow data ready for creation
@@ -735,7 +740,7 @@ class WorkflowProcessor:
             )
             
             # Generate positions for nodes
-            positioned_nodes = self._position_nodes(nodes)
+            positioned_nodes = self._position_nodes(nodes, positions)
             
             # Create flow data structure
             flow_data = {
@@ -804,11 +809,12 @@ class WorkflowProcessor:
             if not isinstance(connection["to_component"], str):
                 raise ValueError(f"Connection {i} to_component must be a string")
 
-    def _position_nodes(self, nodes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _position_nodes(self, nodes: List[Dict[str, Any]], positions: Optional[Dict[str, Dict[str, float]]] = None) -> List[Dict[str, Any]]:
         """Calculate positions for nodes in the flow.
         
         Args:
             nodes: List of nodes to position
+            positions: Optional dictionary of preserved positions {node_id: {x, y}}
             
         Returns:
             List of positioned nodes
@@ -816,12 +822,17 @@ class WorkflowProcessor:
         positioned_nodes = []
         
         for i, node in enumerate(nodes):
-            # Simple grid positioning
-            column = i % 3
-            row = i // 3
-            
             positioned_node = node.copy()
-            positioned_node["position"] = {"x": column * 300, "y": row * 200}
+            
+            # Use preserved position if available, otherwise generate new position
+            node_id = node.get("id")
+            if positions and node_id and node_id in positions:
+                positioned_node["position"] = positions[node_id]
+            else:
+                # Simple grid positioning
+                column = i % 3
+                row = i // 3
+                positioned_node["position"] = {"x": column * 300, "y": row * 200}
             
             positioned_nodes.append(positioned_node)
             
@@ -854,11 +865,14 @@ async def process_ai_workflow(
             settings_service = get_settings_service()
             component_templates = await get_and_cache_all_types_dict(settings_service)
         
+        # Extract positions if provided
+        positions = ai_response.get("positions", None)
+        
         # Use the session_scope context manager properly
         async with session_scope() as session:
             processor = WorkflowProcessor(session, component_templates)
             ai_workflow = AISuggestedWorkflow.from_dict(ai_response)
-            result = await processor.process_workflow(ai_workflow, user_id)
+            result = await processor.process_workflow(ai_workflow, user_id, positions)
             
             # Wrap the result in the expected format
             return {

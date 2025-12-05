@@ -115,8 +115,8 @@ type AISuggestedWorkflow = {
 
 const ASSISTANT_CONFIG = {
   baseUrl: "http://localhost:7860",
-  flowId: "0c94b0ea-c8f0-446e-8eb0-e59cf610996f",
-  apiKey: "sk-QC5TWVcsKu8XkuXCliyL0uKx_XW_tpILkkYhyLJTLmA",
+  flowId: "b07fff99-893b-4a3c-880c-ba157c0e9c2a",
+  apiKey: "sk-zqaM1H_tEPt027Elpb0bte58xWuCGyp7-wxQIKime2I",
   sessionId:
     import.meta.env.VITE_ASSISTANT_SESSION_ID ??
     `flow-chat-${Math.random().toString(36).slice(2, 10)}`,

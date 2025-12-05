@@ -131,13 +131,13 @@ const router = createBrowserRouter(
                 <Route path="settings" element={<SettingsPage />}>
                   <Route
                     index
-                    element={<CustomNavigate replace to={"mcp-servers"} />}
+                    element={<CustomNavigate replace to={"global-variables"} />}
                   />
                   <Route
                     path="global-variables"
                     element={<GlobalVariablesPage />}
                   />
-                  <Route path="mcp-servers" element={<MCPServersPage />} />
+                  {/* <Route path="mcp-servers" element={<MCPServersPage />} /> */}
                   <Route path="api-keys" element={<ApiKeysPage />} />
                   <Route path="shortcuts" element={<ShortcutsPage />} />
                   <Route path="messages" element={<MessagesPage />} />

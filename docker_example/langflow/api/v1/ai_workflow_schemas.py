@@ -1,6 +1,6 @@
 """AI Workflow schemas for processing AI-suggested workflows."""
 
-from typing import Any
+from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 
@@ -29,6 +29,7 @@ class AISuggestedWorkflow(BaseModel):
     description: str = Field("", description="Human-readable workflow description")
     components: list[AIComponent] = Field(..., description="List of components in the workflow")
     connections: list[AIConnection] = Field(..., description="List of connections between components")
+    positions: Optional[dict[str, dict[str, float]]] = Field(default_factory=dict, description="Preserved node positions")
 
 
 class ProcessAIWorkflowRequest(BaseModel):

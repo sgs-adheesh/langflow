@@ -1,4 +1,6 @@
-from typing import Any, List
+"""AI Workflow schemas for processing AI-suggested workflows."""
+
+from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 
@@ -14,10 +16,10 @@ class AIComponent(BaseModel):
 class AIConnection(BaseModel):
     """AI-suggested connection between components."""
     
-    from_component: str = Field(..., description="Logical ID of the source component")
-    to_component: str = Field(..., description="Logical ID of the target component")
-    from_handle: str | None = Field(None, description="Source handle name (optional)")
-    to_handle: str | None = Field(None, description="Target handle name (optional)")
+    from_component: str = Field(..., description="Source component ID")
+    to_component: str = Field(..., description="Target component ID")
+    from_handle: str | None = Field(None, description="Optional source handle name")
+    to_handle: str | None = Field(None, description="Optional target handle name")
 
 
 class AISuggestedWorkflow(BaseModel):
@@ -27,6 +29,7 @@ class AISuggestedWorkflow(BaseModel):
     description: str = Field("", description="Human-readable workflow description")
     components: list[AIComponent] = Field(..., description="List of components in the workflow")
     connections: list[AIConnection] = Field(..., description="List of connections between components")
+    positions: Optional[dict[str, dict[str, float]]] = Field(default_factory=dict, description="Preserved node positions")
 
 
 class ProcessAIWorkflowRequest(BaseModel):
@@ -42,3 +45,18 @@ class ProcessAIWorkflowResponse(BaseModel):
     flow_data: dict[str, Any] | None = Field(None, description="Processed flow data ready for creation")
     message: str | None = Field(None, description="Status message")
     error: str | None = Field(None, description="Error message if processing failed")
+
+
+class EditAIWorkflowRequest(BaseModel):
+    """Request to edit an existing workflow using AI."""
+    
+    workflow_data: dict[str, Any] = Field(..., description="Modified AI-suggested workflow data")
+
+
+class EditAIWorkflowResponse(BaseModel):
+    """Response from editing a workflow using AI."""
+    
+    success: bool = Field(True, description="Whether the edit was successful")
+    flow_data: dict[str, Any] | None = Field(None, description="Updated flow data")
+    message: str | None = Field(None, description="Status message")
+    error: str | None = Field(None, description="Error message if editing failed")

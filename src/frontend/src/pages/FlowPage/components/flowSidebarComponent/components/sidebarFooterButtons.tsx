@@ -27,7 +27,7 @@ const SidebarMenuButtons = ({
           disabled={isLoading}
           onClick={handleAddMcpServerClick}
           data-testid="sidebar-add-mcp-server-button"
-          className="flex items-center w-full h-full gap-3 hover:bg-muted"
+          className="flex items-center w-full h-full gap-3 hover:bg-[hsl(217.2,91.2%,50.8%)] hover:bg-opacity-10"
         >
           <ForwardedIconComponent
             name="Plus"
@@ -46,7 +46,7 @@ const SidebarMenuButtons = ({
             navigate("/settings/mcp-servers");
           }}
           data-testid="sidebar-manage-servers-button"
-          className="flex items-center w-full h-full gap-3 hover:bg-muted"
+          className="flex items-center w-full h-full gap-3 hover:bg-[hsl(217.2,91.2%,50.8%)] hover:bg-opacity-10"
         >
           <ForwardedIconComponent
             name="ArrowUpRight"
@@ -70,7 +70,7 @@ const SidebarMenuButtons = ({
           }
         }}
         data-testid="sidebar-custom-component-button"
-        className="flex items-center w-full h-full gap-3 hover:bg-muted"
+        className="flex items-center w-full h-full gap-3 hover:bg-[hsl(217.2,91.2%,50.8%)] hover:bg-opacity-10"
       >
         <ForwardedIconComponent
           name="Plus"

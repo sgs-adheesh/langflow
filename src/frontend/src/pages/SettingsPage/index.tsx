@@ -24,48 +24,53 @@ export default function SettingsPage(): JSX.Element {
     icon: React.ReactNode;
   }[] = [];
 
-  sidebarNavItems.push(
-    {
-      title: "MCP Servers",
-      href: "/settings/mcp-servers",
-      icon: (
-        <ForwardedIconComponent
-          name="Mcp"
-          className="w-4 flex-shrink-0 justify-start stroke-[1.5]"
-        />
-      ),
-    },
-    {
-      title: "Global Variables",
-      href: "/settings/global-variables",
-      icon: (
-        <ForwardedIconComponent
-          name="Globe"
-          className="w-4 flex-shrink-0 justify-start stroke-[1.5]"
-        />
-      ),
-    },
-    {
-      title: "Shortcuts",
-      href: "/settings/shortcuts",
-      icon: (
-        <ForwardedIconComponent
-          name="Keyboard"
-          className="w-4 flex-shrink-0 justify-start stroke-[1.5]"
-        />
-      ),
-    },
-    {
-      title: "Messages",
-      href: "/settings/messages",
-      icon: (
-        <ForwardedIconComponent
-          name="MessagesSquare"
-          className="w-4 flex-shrink-0 justify-start stroke-[1.5]"
-        />
-      ),
-    },
-  );
+  // MCP Servers tab (commented out)
+  // sidebarNavItems.push({
+  //   title: "MCP Servers",
+  //   href: "/settings/mcp-servers",
+  //   icon: (
+  //     <ForwardedIconComponent
+  //       name="Mcp"
+  //       className="w-4 flex-shrink-0 justify-start stroke-[1.5]"
+  //     />
+  //   ),
+  // });
+
+  // Add Global Variables tab
+  sidebarNavItems.push({
+    title: "Global Variables",
+    href: "/settings/global-variables",
+    icon: (
+      <ForwardedIconComponent
+        name="Globe"
+        className="w-4 flex-shrink-0 justify-start stroke-[1.5]"
+      />
+    ),
+  });
+
+  // Add Shortcuts tab
+  sidebarNavItems.push({
+    title: "Shortcuts",
+    href: "/settings/shortcuts",
+    icon: (
+      <ForwardedIconComponent
+        name="Keyboard"
+        className="w-4 flex-shrink-0 justify-start stroke-[1.5]"
+      />
+    ),
+  });
+
+  // Add Messages tab
+  sidebarNavItems.push({
+    title: "Messages",
+    href: "/settings/messages",
+    icon: (
+      <ForwardedIconComponent
+        name="MessagesSquare"
+        className="w-4 flex-shrink-0 justify-start stroke-[1.5]"
+      />
+    ),
+  });
 
   // Add API Keys and Store items
   const storeSidebarItems = CustomStoreSidebar(hasApiKey, hasStore);

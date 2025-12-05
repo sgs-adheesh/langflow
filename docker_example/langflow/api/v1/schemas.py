@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Literal, Optional
 from uuid import UUID
 
 from lfx.graph.schema import RunOutputs
@@ -490,6 +490,7 @@ class AISuggestedWorkflow(BaseModel):
     description: str = Field("", description="Human-readable workflow description")
     components: list[AIComponent] = Field(..., description="List of components in the workflow")
     connections: list[AIConnection] = Field(..., description="List of connections between components")
+    positions: Optional[dict[str, dict[str, float]]] = Field(default_factory=dict, description="Preserved node positions")
 
 
 class ProcessAIWorkflowRequest(BaseModel):

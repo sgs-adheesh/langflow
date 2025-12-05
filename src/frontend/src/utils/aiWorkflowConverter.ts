@@ -15,6 +15,8 @@ export type SimplifiedWorkflow = {
   description: string;
   components: SimplifiedComponent[];
   connections: SimplifiedConnection[];
+  // Add positions to preserve node locations
+  positions?: Record<string, { x: number; y: number }>;
 };
 
 export type SimplifiedComponent = {
@@ -81,11 +83,22 @@ export function convertFlowToSimplified(flow: FlowType): SimplifiedWorkflow {
     return connection;
   }) || [];
 
+  // Extract positions to preserve node locations
+  const positions: Record<string, { x: number; y: number }> = {};
+  if (flow.data.nodes) {
+    flow.data.nodes.forEach((node) => {
+      if (node.position) {
+        positions[node.id] = { x: node.position.x, y: node.position.y };
+      }
+    });
+  }
+
   return {
     name: flow.name || "Unnamed Workflow",
     description: flow.description || "",
     components,
     connections,
+    positions,
   };
 }
 

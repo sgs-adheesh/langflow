@@ -26,7 +26,7 @@ export default function TemplateCardComponent({
   return (
     <div
       data-testid={`template-${convertTestName(example.name)}`}
-      className="group flex cursor-pointer gap-3 overflow-hidden rounded-md p-3 hover:bg-muted focus-visible:bg-muted"
+      className="group flex cursor-pointer gap-3 overflow-hidden rounded-md p-3 hover:bg-[hsl(217.2,91.2%,50.8%)] hover:bg-opacity-10 focus-visible:bg-[hsl(217.2,91.2%,50.8%)] focus-visible:bg-opacity-10"
       tabIndex={0}
       onKeyDown={handleKeyDown}
       onClick={onClick}

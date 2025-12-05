@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import AlertDropdown from "@/alerts/alertDropDown";
 import DataStaxLogo from "@/assets/DataStaxLogo.svg?react";
 import { AssistantButton } from "@/components/common/assistant";
@@ -17,6 +17,9 @@ import { useCustomNavigate } from "@/customization/hooks/use-custom-navigate";
 import useTheme from "@/customization/hooks/use-custom-theme";
 import useAlertStore from "@/stores/alertStore";
 import FlowMenu from "./components/FlowMenu";
+import { CustomAccountMenu } from "@/customization/components/custom-AccountMenu";
+import { useLogout } from "@/controllers/API/queries/auth";
+import { AuthContext } from "@/contexts/authContext";
 
 export default function AppHeader(): JSX.Element {
   const notificationCenter = useAlertStore((state) => state.notificationCenter);
@@ -50,6 +53,18 @@ export default function AppHeader(): JSX.Element {
       ? `${baseClasses} right-[0.3rem] top-[5px]`
       : "hidden";
   };
+
+  const { mutate: mutationLogout } = useLogout();
+    const { clearAuthSession } = useContext(AuthContext);
+  
+    const handleLogout = () => {
+      mutationLogout(undefined, {
+        onSuccess: () => {
+          clearAuthSession();
+          navigate("/login");
+        },
+      });
+    };
 
   return (
     <div
@@ -156,6 +171,30 @@ export default function AppHeader(): JSX.Element {
             </div>
           </Button>
         </ShadTooltip>
+        <ShadTooltip
+          content="Logout"
+          side="bottom"
+          styleClasses="z-10"
+        >
+          <Button
+            unstyled
+            onClick={() => handleLogout()}
+            data-testid="settings_button"
+          >
+            <div className="hit-area-hover group relative items-center rounded-md px-2 py-2 text-muted-foreground">
+              <ForwardedIconComponent
+                name="LogOut"
+                className="side-bar-button-size h-4 w-4 text-muted-foreground group-hover:text-primary"
+                strokeWidth={2}
+              />
+              <span className="hidden whitespace-nowrap">
+                Logout
+              </span>
+            </div>
+          </Button>
+        </ShadTooltip>
+
+        {/* <CustomAccountMenu /> */}
       </div>
     </div>
   );

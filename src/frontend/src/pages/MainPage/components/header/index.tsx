@@ -74,7 +74,9 @@ const HeaderComponent = ({
   };
 
   // Determine which tabs to show based on feature flag
-  const tabTypes = isMCPEnabled ? ["mcp", "flows"] : ["components", "flows"];
+  // const tabTypes = isMCPEnabled ? ["mcp", "flows"] : ["components", "flows"];
+  // Show only flows and components tabs, excluding MCP
+  const tabTypes = ["components", "flows"];
 
   const handleDownload = () => {
     downloadFlows({ ids: selectedFlows });
@@ -115,7 +117,7 @@ const HeaderComponent = ({
         <>
           <div className={cn("flex flex-row-reverse pb-4")}>
             <div className="w-full border-b dark:border-border" />
-            {tabTypes.map((type) => (
+            {/* {tabTypes.map((type) => (
               <Button
                 key={type}
                 unstyled
@@ -134,6 +136,27 @@ const HeaderComponent = ({
                   {type === "mcp"
                     ? "MCP Server"
                     : type.charAt(0).toUpperCase() + type.slice(1)}
+                </div>
+              </Button>
+            ))} */}
+            {/* Show only flows and components tabs */}
+            {tabTypes.filter(type => type !== "mcp").map((type) => (
+              <Button
+                key={type}
+                unstyled
+                id={`${type}-btn`}
+                data-testid={`${type}-btn`}
+                onClick={() => {
+                  setFlowType(type as "flows" | "components" | "mcp");
+                }}
+                className={`border-b ${
+                  flowType === type
+                    ? "border-b-2 border-foreground text-foreground"
+                    : "border-border text-muted-foreground hover:text-foreground"
+                } text-nowrap px-2 pb-2 pt-1 text-mmd`}
+              >
+                <div className={flowType === type ? "-mb-px" : ""}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
                 </div>
               </Button>
             ))}

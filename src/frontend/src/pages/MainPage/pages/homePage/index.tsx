@@ -281,9 +281,9 @@ const HomePage = ({ type }: { type: "flows" | "components" | "mcp" }) => {
                         <ListSkeleton />
                       </div>
                     )
-                  ) : flowType === "mcp" ? (
+                  ) : /* flowType === "mcp" ? (
                     <CustomMcpServerTab folderName={folderName} />
-                  ) : (flowType === "flows" || flowType === "components") &&
+                  ) : */ (flowType === "flows" || flowType === "components") &&
                     data &&
                     data.pagination.total > 0 ? (
                     view === "grid" ? (
