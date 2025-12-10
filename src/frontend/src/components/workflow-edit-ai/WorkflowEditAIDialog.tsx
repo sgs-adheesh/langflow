@@ -147,8 +147,8 @@ Modified workflow JSON:`;
       // Step 3: Call AI agent (same one used for "Create using AI")
       const ASSISTANT_CONFIG = {
         baseUrl: "http://localhost:7860",
-        flowId: "0c94b0ea-c8f0-446e-8eb0-e59cf610996f",
-        apiKey: "sk-QC5TWVcsKu8XkuXCliyL0uKx_XW_tpILkkYhyLJTLmA",
+        flowId: "1042aa6f-bcf5-49a4-80b5-91c01e6d9499",
+        apiKey: "sk-2Qzpowa4Xdt7n5C2J4InZDGTR_z9ztaY5latLJenClY",
       };
 
       const response = await fetch(
@@ -169,7 +169,17 @@ Modified workflow JSON:`;
       );
 
       if (!response.ok) {
-        throw new Error(`AI agent returned error: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('AI agent error response:', errorText);
+        throw new Error(`AI agent returned error (${response.status}): ${response.statusText}`);
+      }
+
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType?.includes('application/json')) {
+        const responseText = await response.text();
+        console.error('Non-JSON response from AI agent:', responseText.substring(0, 500));
+        throw new Error(`AI agent returned HTML instead of JSON. This usually means the SystemMessageGen flow is not available or there's an authentication issue.`);
       }
 
       const aiResponse = await response.json();

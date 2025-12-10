@@ -5,7 +5,6 @@ import ShadTooltip from "@/components/common/shadTooltipComponent";
 import { ChatAssistantLauncher } from "@/components/chat-assistant";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useDeleteDeleteFlows } from "@/controllers/API/queries/flows/use-delete-delete-flows";
 import { useGetDownloadFlows } from "@/controllers/API/queries/flows/use-get-download-flows";
 import { ENABLE_MCP } from "@/customization/feature-flags";
@@ -100,67 +99,10 @@ const HeaderComponent = ({
         className="flex items-center pb-4 text-sm font-medium"
         data-testid="mainpage_title"
       >
-        <div className="h-7 w-10 transition-all group-data-[open=true]/sidebar-wrapper:md:w-0 lg:hidden">
-          <div className="relative left-0 opacity-100 transition-all group-data-[open=true]/sidebar-wrapper:md:opacity-0">
-            <SidebarTrigger>
-              <ForwardedIconComponent
-                name="PanelLeftOpen"
-                aria-hidden="true"
-                className=""
-              />
-            </SidebarTrigger>
-          </div>
-        </div>
-        {folderName}
+        Agentic Workflows
       </div>
       {!isEmptyFolder && (
         <>
-          <div className={cn("flex flex-row-reverse pb-4")}>
-            <div className="w-full border-b dark:border-border" />
-            {/* {tabTypes.map((type) => (
-              <Button
-                key={type}
-                unstyled
-                id={`${type}-btn`}
-                data-testid={`${type}-btn`}
-                onClick={() => {
-                  setFlowType(type as "flows" | "components" | "mcp");
-                }}
-                className={`border-b ${
-                  flowType === type
-                    ? "border-b-2 border-foreground text-foreground"
-                    : "border-border text-muted-foreground hover:text-foreground"
-                } text-nowrap px-2 pb-2 pt-1 text-mmd`}
-              >
-                <div className={flowType === type ? "-mb-px" : ""}>
-                  {type === "mcp"
-                    ? "MCP Server"
-                    : type.charAt(0).toUpperCase() + type.slice(1)}
-                </div>
-              </Button>
-            ))} */}
-            {/* Show only flows and components tabs */}
-            {tabTypes.filter(type => type !== "mcp").map((type) => (
-              <Button
-                key={type}
-                unstyled
-                id={`${type}-btn`}
-                data-testid={`${type}-btn`}
-                onClick={() => {
-                  setFlowType(type as "flows" | "components" | "mcp");
-                }}
-                className={`border-b ${
-                  flowType === type
-                    ? "border-b-2 border-foreground text-foreground"
-                    : "border-border text-muted-foreground hover:text-foreground"
-                } text-nowrap px-2 pb-2 pt-1 text-mmd`}
-              >
-                <div className={flowType === type ? "-mb-px" : ""}>
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                </div>
-              </Button>
-            ))}
-          </div>
           {/* Search and filters */}
           {flowType !== "mcp" && (
             <div className="flex justify-between">
@@ -169,7 +111,7 @@ const HeaderComponent = ({
                   icon="Search"
                   data-testid="search-store-input"
                   type="text"
-                  placeholder={`Search ${flowType}...`}
+                  placeholder="Search flows..."
                   className="mr-2 !text-mmd"
                   inputClassName="!text-mmd"
                   value={debouncedSearch}

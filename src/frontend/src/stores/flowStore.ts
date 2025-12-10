@@ -1125,6 +1125,10 @@ const useFlowStore = create<FlowStoreType>((set, get) => ({
   setStopNodeId: (nodeId: string | undefined) => {
     set({ stopNodeId: nodeId });
   },
+  isStreaming: false,
+  setIsStreaming: (isStreaming: boolean) => {
+    set({ isStreaming });
+  },
 }));
 
 export default useFlowStore;

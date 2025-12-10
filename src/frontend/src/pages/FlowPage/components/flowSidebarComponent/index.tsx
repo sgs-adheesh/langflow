@@ -612,13 +612,7 @@ export function FlowSidebarComponent({ isLoading }: FlowSidebarComponentProps) {
       className="noflow select-none"
     >
       <div className="flex h-full">
-        {ENABLE_NEW_SIDEBAR && <SidebarSegmentedNav />}
-        <div
-          className={cn(
-            "flex flex-col h-full w-full group-data-[collapsible=icon]:hidden",
-            ENABLE_NEW_SIDEBAR && "sidebar-segmented",
-          )}
-        >
+        <div className="flex flex-col h-full w-full group-data-[collapsible=icon]:hidden">
           <SidebarHeaderComponent
             showConfig={showConfig}
             setShowConfig={setShowConfig}
@@ -637,10 +631,7 @@ export function FlowSidebarComponent({ isLoading }: FlowSidebarComponentProps) {
             resetFilters={resetFilters}
           />
 
-          <SidebarContent
-            segmentedSidebar={ENABLE_NEW_SIDEBAR}
-            className="flex-1 group-data-[collapsible=icon]:hidden gutter-stable"
-          >
+          <SidebarContent className="flex-1 group-data-[collapsible=icon]:hidden gutter-stable">
             {isLoading ? (
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-1 p-3">

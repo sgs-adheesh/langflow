@@ -486,6 +486,7 @@ function GenericNode({
   return (
     <div className={cn(shouldShowUpdateComponent ? "relative -mt-10" : "")}>
       <div
+        data-animated={data.animated ? "true" : "false"}
         className={cn(
           borderColor,
           showNode ? "w-80" : `w-48`,

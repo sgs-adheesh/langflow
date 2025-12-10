@@ -69,6 +69,7 @@ export type NodeDataType = {
   selected_output_type?: string;
   buildStatus?: BuildStatus;
   selected_output?: string;
+  animated?: boolean; // For streaming workflow animation
 };
 
 export type EdgeType = Edge<EdgeDataType, "default">;
@@ -76,6 +77,7 @@ export type EdgeType = Edge<EdgeDataType, "default">;
 export type EdgeDataType = {
   sourceHandle: sourceHandleType;
   targetHandle: targetHandleType;
+  streamAnimated?: boolean; // For streaming workflow animation
 };
 
 // FlowStyleType is the type of the style object that is used to style the

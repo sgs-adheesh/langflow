@@ -17,7 +17,10 @@ export const ChatAssistantDialog = ({
         className="flex h-[85vh] w-[92vw] max-w-5xl flex-col overflow-hidden bg-transparent p-0"
         closeButtonClassName="text-muted-foreground hover:text-foreground"
       >
-        <ChatAssistant variant="dialog" />
+        <ChatAssistant 
+          variant="dialog" 
+          onClose={() => onOpenChange(false)} 
+        />
       </DialogContent>
     </Dialog>
   );

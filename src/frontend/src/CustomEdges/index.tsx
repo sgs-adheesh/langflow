@@ -69,6 +69,7 @@ export function DefaultEdge({
       strokeDasharray={targetHandleObject.output_types ? "5 5" : "0"}
       {...domSafeProps}
       data-animated={animated ? "true" : "false"}
+      data-stream-animated={props.data?.streamAnimated ? "true" : "false"}
       data-selectable={selectable ? "true" : "false"}
       data-deletable={deletable ? "true" : "false"}
       data-selected={selected ? "true" : "false"}

@@ -63,7 +63,7 @@ export const MemoizedCanvasControls = memo(
 
 export const MemoizedSidebarTrigger = memo(() => {
   const { open, toggleSidebar, setActiveSection } = useSidebar();
-  const { focusSearch, isSearchFocused } = useSearchContext();
+  const { focusSearch } = useSearchContext();
   if (ENABLE_NEW_SIDEBAR) {
     return (
       <Panel
@@ -75,6 +75,7 @@ export const MemoizedSidebarTrigger = memo(() => {
       >
         {NAV_ITEMS.map((item) => (
           <CanvasControlButton
+            key={item.id}
             data-testid={`sidebar-trigger-${item.id}`}
             iconName={item.icon}
             iconClasses={item.id === "mcp" ? "h-8 w-8" : ""}
@@ -85,7 +86,6 @@ export const MemoizedSidebarTrigger = memo(() => {
                 toggleSidebar();
               }
               if (item.id === "search") {
-                // Add a small delay to ensure the sidebar is open and input is rendered
                 setTimeout(() => focusSearch(), 100);
               }
             }}

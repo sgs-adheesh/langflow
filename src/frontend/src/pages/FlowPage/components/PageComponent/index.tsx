@@ -115,6 +115,7 @@ export default function Page({
   const nodes = useFlowStore((state) => state.nodes);
   const edges = useFlowStore((state) => state.edges);
   const isEmptyFlow = useRef(nodes.length === 0);
+  const isStreaming = useFlowStore((state) => state.isStreaming);
   const onNodesChange = useFlowStore((state) => state.onNodesChange);
   const onEdgesChange = useFlowStore((state) => state.onEdgesChange);
   const setNodes = useFlowStore((state) => state.setNodes);
@@ -792,7 +793,7 @@ export default function Page({
               onDrop={onDrop}
               onSelectionChange={onSelectionChange}
               deleteKeyCode={[]}
-              fitView={isEmptyFlow.current ? false : true}
+              fitView={isEmptyFlow.current || isStreaming ? false : true}
               fitViewOptions={fitViewOptions}
               className="theme-attribution"
               tabIndex={isLocked ? -1 : undefined}

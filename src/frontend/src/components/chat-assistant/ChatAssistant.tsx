@@ -7,12 +7,14 @@ import remarkGfm from "remark-gfm";
 import rehypeMathjax from "rehype-mathjax/browser";
 import { BRAND_NAME, BRAND_TAGLINE } from "@/constants/branding";
 import { useCustomNavigate } from "@/customization/hooks/use-custom-navigate";
+import { useStreamWorkflow } from "@/hooks/useStreamWorkflow";
 import { customGetAccessToken } from "@/customization/utils/custom-get-access-token";
 import { useGetTypes } from "@/controllers/API/queries/flows/use-get-types";
 import useAddFlow from "@/hooks/flows/use-add-flow";
 import { Button } from "@/components/ui/button";
 import ForwardedIconComponent from "@/components/common/genericIconComponent";
 import { useTypesStore } from "@/stores/typesStore";
+import { getLayoutedNodes } from "@/utils/layoutUtils";
 import type {
   APIClassType,
   APITemplateType,
@@ -36,6 +38,7 @@ type ChatMessage = {
 
 type ChatAssistantProps = {
   variant?: "page" | "dialog";
+  onClose?: () => void; // Callback to close dialog
 };
 
 type BlueprintNodeInput = {
@@ -115,8 +118,8 @@ type AISuggestedWorkflow = {
 
 const ASSISTANT_CONFIG = {
   baseUrl: "http://localhost:7860",
-  flowId: "b07fff99-893b-4a3c-880c-ba157c0e9c2a",
-  apiKey: "sk-zqaM1H_tEPt027Elpb0bte58xWuCGyp7-wxQIKime2I",
+  flowId: "3eba9d9e-b637-4b74-9988-955386f05096",
+  apiKey: "sk-2Qzpowa4Xdt7n5C2J4InZDGTR_z9ztaY5latLJenClY",
   sessionId:
     import.meta.env.VITE_ASSISTANT_SESSION_ID ??
     `flow-chat-${Math.random().toString(36).slice(2, 10)}`,
@@ -263,9 +266,10 @@ const sanitizePosition = (
   ) {
     return { x: position.x, y: position.y };
   }
+  // Better spacing: 3 columns with 400px horizontal and 280px vertical spacing
   const column = index % 3;
   const row = Math.floor(index / 3);
-  return { x: column * 360, y: row * 240 };
+  return { x: column * 400, y: row * 280 };
 };
 
 const parseHandleHint = (handle: unknown): HandleHint | null => {
@@ -884,7 +888,7 @@ const initialMessages: ChatMessage[] = [
   },
 ];
 
-export const ChatAssistant = ({ variant = "page" }: ChatAssistantProps) => {
+export const ChatAssistant = ({ variant = "page", onClose }: ChatAssistantProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [inputValue, setInputValue] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -897,6 +901,7 @@ export const ChatAssistant = ({ variant = "page" }: ChatAssistantProps) => {
   const templates = useTypesStore((state) => state.templates);
   const addFlow = useAddFlow();
   const navigate = useCustomNavigate();
+  const { streamWorkflow } = useStreamWorkflow();
 
   const isConfigReady = useMemo(
     () =>
@@ -936,29 +941,72 @@ export const ChatAssistant = ({ variant = "page" }: ChatAssistantProps) => {
     if (!blueprintPlan) return;
     setIsCreatingFlow(true);
     setCreateError(null);
+    
     try {
+      // Apply automatic layout to nodes for proper spacing
+      let layoutedNodes = blueprintPlan.flowData.nodes;
+      if (layoutedNodes && layoutedNodes.length > 0 && blueprintPlan.flowData.edges) {
+        try {
+          layoutedNodes = await getLayoutedNodes(
+            blueprintPlan.flowData.nodes,
+            blueprintPlan.flowData.edges
+          );
+        } catch (error) {
+          console.warn("Layout failed, using fallback positioning:", error);
+          // Fallback: simple grid layout if ELK fails
+          layoutedNodes = blueprintPlan.flowData.nodes.map((node, index) => {
+            const column = index % 3;
+            const row = Math.floor(index / 3);
+            return {
+              ...node,
+              position: { x: column * 400, y: row * 280 }
+            };
+          });
+        }
+      }
+      
       const flow: FlowType = {
         id: "",
         name: blueprintPlan.name?.trim() || "AI Generated Flow",
         description:
           blueprintPlan.description?.trim() ||
           "Generated via the Flow Architect assistant",
-        data: blueprintPlan.flowData,
+        data: {
+          ...blueprintPlan.flowData,
+          nodes: layoutedNodes, // Use layouted nodes with proper spacing
+        },
       };
+      
+      // Create the flow
       const createdId = await addFlow({ flow });
+      
+      if (createdId) {
+        // Close dialog if in dialog mode
+        if (variant === "dialog" && onClose) {
+          onClose();
+        }
+        
+        // Navigate to flow editor immediately
+        navigate(`/flow/${createdId}`);
+        
+        // Small delay to let the page render, then start streaming animation
+        setTimeout(async () => {
+          if (layoutedNodes && blueprintPlan.flowData.edges) {
+            await streamWorkflow(
+              layoutedNodes,
+              blueprintPlan.flowData.edges,
+              {
+                delay: 250,
+                animateNodes: true,
+                animateEdges: true,
+              }
+            );
+          }
+        }, 300); // Wait for page to load before streaming
+      }
+      
       setBlueprintPlan(null);
       setIsCreatingFlow(false);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            "Created a new flow from the assistant blueprint. Redirecting you to the editor...",
-        },
-      ]);
-      if (createdId) {
-        navigate(`/flow/${createdId}`);
-      }
     } catch (err) {
       setIsCreatingFlow(false);
       const message =

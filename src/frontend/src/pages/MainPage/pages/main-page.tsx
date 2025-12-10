@@ -1,8 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import SideBarFoldersButtonsComponent from "@/components/core/folderSidebarComponent/components/sideBarFolderButtons";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { useDeleteFolders } from "@/controllers/API/queries/folders";
 import CustomEmptyPageCommunity from "@/customization/components/custom-empty-page";
 import CustomLoader from "@/customization/components/custom-loader";
@@ -55,24 +53,7 @@ export default function CollectionPage(): JSX.Element {
   };
 
   return (
-    <SidebarProvider width="280px">
-      {flows &&
-        examples &&
-        folders &&
-        (flows?.length !== examples?.length || folders?.length > 1) && (
-          <SideBarFoldersButtonsComponent
-            handleChangeFolder={(id: string) => {
-              navigate(`all/folder/${id}`);
-            }}
-            handleDeleteFolder={(item) => {
-              setFolderToEdit(item);
-              setOpenDeleteFolderModal(true);
-            }}
-            handleFilesClick={() => {
-              navigate("assets");
-            }}
-          />
-        )}
+    <>
       <main className="flex h-full w-full overflow-hidden">
         {flows && examples && folders ? (
           <div
@@ -97,6 +78,6 @@ export default function CollectionPage(): JSX.Element {
         setOpenDeleteFolderModal={setOpenDeleteFolderModal}
         handleDeleteFolder={handleDeleteFolder}
       />
-    </SidebarProvider>
+    </>
   );
 }

@@ -462,3 +462,121 @@
     --indigo-foreground: 234.5 89.5% 73.9%;
   }
 }
+
+/* Streaming Workflow Animations - Enhanced */
+@keyframes streamNodeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(-30px) rotate(-5deg);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08) translateY(5px) rotate(2deg);
+    filter: blur(2px);
+  }
+  70% {
+    transform: scale(0.98) translateY(-2px) rotate(-1deg);
+    filter: blur(0px);
+  }
+  85% {
+    transform: scale(1.02) translateY(1px) rotate(0.5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0) rotate(0deg);
+    filter: blur(0px);
+  }
+}
+
+@keyframes streamEdgeIn {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 100;
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8));
+  }
+  50% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 12px rgba(59, 130, 246, 1));
+  }
+  100% {
+    opacity: 1;
+    stroke-dashoffset: 0;
+    filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.4));
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4),
+                0 0 16px rgba(59, 130, 246, 0.2);
+  }
+  25% {
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.7),
+                0 0 32px rgba(59, 130, 246, 0.4),
+                0 0 48px rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(59, 130, 246, 0.9),
+                0 0 48px rgba(59, 130, 246, 0.6),
+                0 0 72px rgba(59, 130, 246, 0.3);
+  }
+  75% {
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.7),
+                0 0 32px rgba(59, 130, 246, 0.4),
+                0 0 48px rgba(59, 130, 246, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4),
+                0 0 16px rgba(59, 130, 246, 0.2);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Apply enhanced animations to nodes with animated flag */
+.react-flow__node[data-animated="true"] {
+  animation: streamNodeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+             pulseGlow 2.5s ease-in-out 0.8s;
+  position: relative;
+}
+
+/* Add shimmer effect during node animation */
+.react-flow__node[data-animated="true"]::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.3),
+    transparent
+  );
+  background-size: 200% 100%;
+  border-radius: inherit;
+  animation: shimmer 1.5s ease-in-out 0.2s 2;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Apply enhanced animations to edges with streamAnimated flag */
+.react-flow__edge[data-stream-animated="true"] path {
+  stroke-dasharray: 8, 4;
+  animation: streamEdgeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  stroke-width: 2.5;
+}
+
+/* Add glow pulse to edges */
+.react-flow__edge[data-stream-animated="true"] path {
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6));
+}
